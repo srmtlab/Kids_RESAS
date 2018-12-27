@@ -1,8 +1,15 @@
+var quizText;
 (function($) {
     $.ipop = function(text) {
 	var wx, wy;    // ウインドウの左上座標
 	console.log("ipopに渡されたテキスト:"+text);
-	console.log(text.length)
+
+	console.log(text.length);
+	var quotient = 7;
+	var row = (text.length)/quotient;
+	var rowLen = 85;
+	var maxRowLen = Math.ceil(row)*rowLen;
+	$("#ipop").height(maxRowLen);
 	var target = document.getElementById("quizText");
 	var popHeight = $('#ipop').height();
 	var popWidth = $('#ipop').width();

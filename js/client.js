@@ -3,16 +3,17 @@ var height = 40;
 var width = 40;
 
 var userRoom;
-var quizText;
+var sceHeight;
 
 $(function () {
     //socket = io({path: '/socket.io/'});
     socket = io({path: '/gtskler/socket.io/'});
     console.log(socket);
-    //$("#entrance").show();
-    $("#entrance").hide();
-    //$("#maincontents").hide();
-    $("#maincontents").show();
+    $("#entrance").show();
+    //$("#entrance").hide();
+    $("#maincontents").hide();
+    //$("#maincontents").show();
+    $("#scenario").hide();
     quesCoord = [];
 
     receiveQuestion();
@@ -20,6 +21,14 @@ $(function () {
     receiveEnterRoom();
     receiveQuiz();
 });
+
+function showTeacherMode(){
+
+    $("#scenario").show();
+    sceHeight = $("#scenario").height();
+    var cStart = $("#up").height()+$("#top").height();
+    $("#myCanvas").css({top:cStart+sceHeight});
+}
 
 function openDialog(){
     var result = prompt( "クイズを入力してください" , "" );
@@ -34,6 +43,7 @@ function openDialog(){
 
 }
 function shareQuiz(){
+    var quizText = document.getElementById("quizText").innerText;
     socket.emit("shareQuiz",quizText);    
 
 }
@@ -44,31 +54,59 @@ function clearCanvas(){
     var c = canvas.getContext("2d");
     c.clearRect(0,0,$("#myCanvas").width(),$("#myCanvas").height());
     quesCoord = [];
+    //以下iframe問題用
+    var cStart = $("#up").height()+$("#top").height();
+    sizingIframe(cStart);
 }
 
 function sizing(cStart){
     console.log("In sizing:" + cStart);
     //$("#wrapper").height(document.body.clientHeight - $("#up").height());
+    //alert("sinzing");
+    
     $("#wrapper").height(1600);
     $("#wrapper").width(1400);
-    
+
     var newHeight = $("#wrapper").height();
+    
     $("#myCanvas").attr({height:newHeight});
+    
     $("#myCanvas").css({top:cStart});
     $("#myCanvas").attr({width:$("#wrapper").width()});
+    
     $("#chart_div").height(newHeight);
     $("#chart_div").css({top:cStart});
+
+    
     $("#chart_div").width($("#wrapper").width());
     console.log("chartW: "+$("#wrapper").width());
+    
 }
 
 function sizingIframe(cStart){
-    console.log("In sizing:" + cStart);
-    var newHeight = $("#wrapper").height();
-    $("#myFrame").height(newHeight);
-    $("#myFrame").css({top:cStart});
-    $("#myFrame").width($("#wrapper").width());
-    console.log("frameWidth: "+$("#wrapper").width());
+    return new Promise(function(resolve){
+	console.log("In sizing:" + cStart);
+	var newHeight = $("#wrapper").height();
+	//$("#myFrame").height(newHeight);
+	$("#myFrame").height(fHeight);
+	$("#myFrame").css({top:cStart});
+	$("#myFrame").width(fWidth);
+	//$("#myFrame").width($("#wrapper").width());
+	$("#myFrame").innerWidth(fWidth);
+	console.log("fWidth: "+fWidth);
+	console.log("frameWidth: "+$("#myFrame").width());
+	console.log("innerHeight: "+$("#myFrame").innerWidth());
+	
+	console.log("fWidth: "+fWidth);
+	//$("#myFrame").css({width:fWidth,height:fHeight});
+	console.log("frameWidth: "+$("#myFrame").width());
+	console.log("innerWidth: "+$("#myFrame").innerWidth());
+	//alert("wid:"+$("#myFrame").width()+",hei"+$("#myFrame").height());
+	//alert("sizingiframe:"+$("#myFrame").width());
+	resolve();
+    });
+    
+    
 }
 
     // Canvas上の座標を計算する為の関数たち
@@ -99,6 +137,7 @@ function drawQuestion() {
     var canvas = document.getElementById("myCanvas");
     var c = canvas.getContext("2d");
     console.log("click");
+
     var pos = getPos(event);
     var cWidth = canvas.clientWidth;
     var cHeight = canvas.clientHeight;
@@ -128,28 +167,58 @@ function canvasInitialize() {
 
     var wrapper = document.createElement('div');
     wrapper.setAttribute("id","wrapper");
+
     wrapper.setAttribute("class","wrapper");
     document.body.appendChild(wrapper);
 
     var canvas = document.createElement('canvas');
     canvas.setAttribute("id","myCanvas");
+    canvas.setAttribute("cursor","pointer");//追記
     canvas.setAttribute("onClick","drawQuestion()");
-
+    /*
+    canvas.setAttribute("z-index","10");
+    canvas.setAttribute("display","block");
+    canvas.setAttribute("position","absolute");
+    */
     //canvas.addEventListener("mouseover","questionAlert()");
     wrapper.appendChild(canvas);
     canvas.addEventListener('mousemove',onMousemove,false);
 
     var chart_div = document.createElement('div');
     chart_div.setAttribute("id","chart_div");
+    chart_div.setAttribute("overflow","auto");//iframe問題用
+    chart_div.setAttribute("display","inline-block");//iframe問題用   
+    
     wrapper.appendChild(chart_div);
-
+    document.getElementById("chart_div").style.WebkitOverlowScrolling = 'touch';
     var container = document.getElementById("container");
     var rect = container.getBoundingClientRect();
     //var cStart = rect.top + rect.height + window.pageYOffset;
     var cStart = $("#up").height()+$("#top").height();
     console.log("canvas開始位置:" + cStart);
+
+    
+    //kidsresas setIframe追記
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute("id", "myFrame");
+    //iframe.setAttribute("width", "1px");
+    //iframe.setAttribute("min-width", "100%");
+    iframe.setAttribute("width", "100%");
+    iframe.setAttribute("height", "100%");
+    //iframe.setAttribute("width", "1400");
+    //iframe.setAttribute("height", "1600");
+
+    iframe.setAttribute("scrolling","auto");    //iframe問題用
+    iframe.setAttribute("display","block");
+    
+    iframe.setAttribute("sandbox", "allow-same-origin allow-scripts allow-top-navigation");
+    document.getElementById("chart_div").appendChild(iframe); 
+    
+
+
     sizing(cStart);
     sizingIframe(cStart);
+
 }
 
 function receiveQuestion() {
@@ -166,7 +235,7 @@ function receiveQuestion() {
         //同じサイズのタブレットを使っているとして割愛
 	var newQuest = document.getElementById('question');
 	//posの値と個人IDをグローバル変数として保持,posから範囲内のマウスオーバーでIDをアラートする方向で	
-        c.drawImage(newQuest, data.pos.x - width/2, data.pos.y - height/2, width, height);
+        c.drawImage(newQuest, data.pos.x - width/2, data.pos.y - height/2 , width, height);
 	quesCoord.push([data.uid,data]);
         
     });
@@ -180,23 +249,37 @@ function receiveGraphDist(){
 	console.log(data.codeNum);
 	document.selbox.pref.selectedIndex = data.codeNum.pref;
 
-	/*
+
 	var parent = document.getElementById("city");
 	
 	while (parent.firstChild) parent.removeChild(parent.firstChild);//市町村のセレクトボックス初期化
 	//セレクトボックスにソケットで送られた市町村を追加
-	let selCity = document.createElement("option");
+	var selCity = document.createElement("option");
         selCity.value = "-";
         selCity.text = "市町村を選ぶ";
         document.getElementById("city").appendChild(selCity);
-	let op = document.createElement("option");
+	var op = document.createElement("option");
 	op.value = data.codeNum.city.citycode;
 	op.text = data.codeNum.city.cityname;
 	document.getElementById("city").appendChild(op);
 	document.selbox.city.selectedIndex = 1;//セレクトボックスには「市町村を選ぶ」とソケットで受け取った市町村しかないので選択される
-	*/
-	citySet(data.codeNum.city.citycode);
+
 	window[data.funcName]();
+	citySet(data.codeNum.city.citycode).then(function(value){
+	    //$("#city").val(value);
+	    console.log("graphDistCitycode:"+data.codeNum.city.citycode);
+	    console.log(value);
+	    console.log($("#city").val());
+
+	}).catch(function (error) {
+	    // 非同期処理失敗。呼ばれない
+	    console.log(error);
+	});
+	
+	//citySet(data.codeNum.city.citycode);
+	//console.log("graphDistCitycode:"+data.codeNum.city.citycode);
+	//console.log($("#city").val());
+	//window[data.funcName](1,[data.codeNum.pref,data.codeNum.city.citycode]);
     });
 }
 
@@ -208,6 +291,16 @@ function receiveEnterRoom(){
 	$("#usersRoomId").val(roomName);
 	
     });
+
+}
+
+function receiveQuiz(){
+    socket.on("shareQuiz", function(data){
+	console.log("receiveQuiz");
+	console.log(data);
+	$.ipop(data);
+    });
+
 
 }
 

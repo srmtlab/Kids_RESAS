@@ -16,6 +16,8 @@ var year;
 var content;
 var category;
 
+var fHeight = 1600;
+var fWidth = 1400;
 
 function setCode() {
 
@@ -23,14 +25,16 @@ function setCode() {
     prefcode = document.selbox.pref.options[prefnum].value;
     prefname = document.selbox.pref.options[prefnum].innerText;
     citynum = document.selbox.city.selectedIndex;
-    citycode = document.selbox.city.options[citynum].value;
-    
+    console.log("bsetcode:"+citycode);
+    citycode = $("#city").val();
+    //citycode = document.selbox.city.options[citynum].value;
+    console.log("asetcode:"+citycode);
 
 }
 
+
 function selectType(types) {
-
-
+    
     //続けて項目を選択した時に、前に表示している地図を削除する
     var node = document.getElementById('chart_div');
     if(node != null){
@@ -114,21 +118,57 @@ function hiddenButtons (types) {
 //input type="hidden"に使用した関数名を埋め込む
 function buryFunc(funcName){
     document.getElementById("funcname").value = funcName;
+
+    $("#myFrame").height(1600);
+
+    $("#myFrame").width(1400);
+
 }
+
 function setIframe(linkTo){
-    var iframe = document.createElement('iframe');
+
+
     socket.emit("fileAppending","グラフ選択");
     console.log("グラフ選択");
-    iframe.setAttribute("src", linkTo);
+    //iframe.setAttribute("src", linkTo);
+    //iframe.setAttribute("scrolling","auto");
+
+    /*
+    var iframe = document.createElement('iframe');
     iframe.setAttribute("id", "myFrame");
     document.getElementById("chart_div").appendChild(iframe);
+    */
+    //document.getElementById("myCanvas").appendChild(iframe);
     console.log("グラフ表示");
+
+
     socket.emit("fileAppending","グラフ表示");
+
+
+    
     var container = document.getElementById("container");
     var rect = container.getBoundingClientRect();
     var cStart = $("#up").height();
-    sizingIframe(cStart);
+	var iframe = document.getElementById("myFrame");
+    iframe.setAttribute("src", linkTo);
+    
+/*
+    sizingIframe(cStart).then(function(){
+//	alert("test");
+
+	//iframe.setAttribute("src", linkTo);
+	setTimeout(iframe.setAttribute("src", linkTo),5000);
+    });
+*/
+//    setTimeout(sizingIframe(cStart),5000);
+    //sizingIframe(cStart);
+    //setTimeout(iframe.setAttribute("src", linkTo),5000);
+    //alert("setIframe:"+$("#myFrame").width());
+    //
+//    var iframe = document.getElementById("myFrame");
+//    
 }
+
 
 //都道府県を選択した時に市町村を取得しドロップダウンリストに追加
 function citySet(num){
@@ -139,17 +179,20 @@ function citySet(num){
 	var apiPath = "api/v1/cities?prefCode=";
 	var prefCode = document.selbox.pref.selectedIndex;
 	console.log("citySet:"+num);
+	
 	$.ajax({
 	    type: 'GET',
 	    url: baseUrl + apiPath + prefCode,
 	    headers: { 'X-API-KEY': apiKey},
 	    dataType: 'json',
 	    success: function(ret){
+		
 		console.log(ret.result);
 		var parent = document.getElementById("city");
 		while (parent.firstChild) parent.removeChild(parent.firstChild);
 		
-		let op = document.createElement("option");
+		var op = document.createElement("option");
+		
 		op.value = "-";
 		op.text = "市町村を選ぶ";
 		document.getElementById("city").appendChild(op);
@@ -157,12 +200,14 @@ function citySet(num){
 		
 		for(var i = 0; i < ret.result.length; i++){
 		    //console.log(ret.result[i].cityName);
-		    let op = document.createElement("option");
+		    var op = document.createElement("option");
 		    op.value = ret.result[i].cityCode;
 		    op.text = ret.result[i].cityName;
 		    document.getElementById("city").appendChild(op);
 		}
+		
 		$("#city").val(num);
+		console.log($("#city").val());
 	    }
 	    
 	});
@@ -173,7 +218,7 @@ function citySet(num){
 	    console.log(num);
 	 
 	}
-	*/
+	*/ 
 	resolve(num);
     });
     
@@ -182,6 +227,7 @@ function citySet(num){
     //c.clearRect(0,0,$("#myCanvas").width(),$("#myCanvas").height());
     
 }
+
 
 
 //RESASの人口構成のページに直接リンクする
@@ -193,7 +239,7 @@ function linkToPopComp(flag,scenarioArray) {
     canvasInitialize();
     if(!flag){
 	setCode();
-	cityname;
+	console.log("flag"+cityname);
 	//var scope;
 	if(citycode == "-"){
             scope = 1;//都道府県全体を選択                                                                                              
@@ -210,7 +256,7 @@ function linkToPopComp(flag,scenarioArray) {
 	}
 	
     }
-    
+    console.log("1-1の市町村コード:"+citycode);
     var linkTo = "https://resas.go.jp/population-composition/#/transition/"+prefcode+"/"+citycode+"/2015/"+scope+"/9.139551352398794/35.07185405/137.44284295";
     console.log(linkTo);
     //window.open(linkTo,'_blank');
@@ -218,6 +264,7 @@ function linkToPopComp(flag,scenarioArray) {
 //以下の部分を他のところにコピペしてください
 /////////////////////////////////////////    
     setIframe(linkTo);
+
     buryFunc("linkToPopComp");
 //////////////////////////////////////////
 
@@ -1125,4 +1172,5 @@ function geo2CityCode(lat, lng) {
     });    
     return deferred.promise();
 }
+
 

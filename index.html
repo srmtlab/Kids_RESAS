@@ -3,12 +3,17 @@
 <html>
     <head>
       <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<!--
+      <meta name="viewport" content="width=1600, maximum-scale=1, user-scalable=0">
+	-->
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
       <link type="text/css" rel="stylesheet" href="./css/hoge.css"  media="screen,projection,print"/>      
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <!--<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
       <script type="text/javascript" src="./js/materialize.min.js"></script>
-      <script type="text/javascript" src="./js/kidsresas.js"></script>
+     <script type="text/javascript" src="./js/kidsresas.js"></script>
 
      <!-- ここでsocket.IOのライブラリを読み込む -->
      <!--<script src="/socket.io/socket.io.js"></script> -->
@@ -18,7 +23,8 @@
      -->
      <script type="text/javascript" src="./js/ipop.js"></script>
      <script type="text/javascript" src="./js/client.js"></script>
-      
+
+     
     </head>
     <title>グラフツクラー</title> 
     <body>
@@ -50,8 +56,9 @@
 <!--	<h2 style="color: #04a; font-size: 24pt; font-family: 'Open Sans';">グラフツクラー</h2>
   -->
 <div id="ipop" class="ipop">
+    <div id="ipop_close" class="ipop_close">とじる</div>
   <div id="ipop_title" class="ipop_title">クイズ</div>
-  <div id="ipop_close" class="ipop_close">x</div>
+
   <div id="quizText" class="quizText">
     問題文
   </div>
@@ -62,29 +69,41 @@
 <p class="bgimg">
    <img src="./img/school_class.png" width="125" height="110" top="100px" left="1000px">
 </p>
-   <input type="button" value="このページを印刷" onclick="window.print();">
 
+     
+     <p class="teacherMode"><input type="button" value="教師用モード" onclick="if(window.prompt('Password?', '')=='xxx') { showTeacherMode();}"></p>
      <!-- シナリオモード -->
      <div class="scenario" id="scenario">
+       <div class="pagePrint">
+         <input type="button" value="このページを印刷" onclick="window.print();">
+	   </div>
        <input type="button" value="クイズを作成する" onclick="openDialog()">
 	 <input type="button" value="クイズを出題する" onclick="shareQuiz()">
-	   
+
+	   <!--
 	   <p class="localSce">
 	 <input type="file" value="ローカルファイル読み込み" id="file">
-	   
-	   <input type="button" value="シナリオ実行" onclick="nextArray()">
-	   </p>
 
+	   </p>
+	 -->
+
+
+	   
 	   <p class="servSce">
 	     <input type="button" value="サーバ上のシナリオをロード" onclick="scenarioLoad()">
 	       
 	     </p>
+	     <input type="button" value="シナリオ実行" onclick="nextArray()">
 	     <p>今のシナリオは<input readonly type="text" name="scenarioRow" id="scenarioRow" value="">
 		 行目です
 	       </p>
+
+	       <input type="button" class="graphDistribution" value="グラフ配信" onclick="graphDistribution()">
+		 <input type="hidden" id="funcname" name="funcname" value="">
+		 </form>	       
+	 </div> <!-- シナリオモード終わり -->
+
 	       
-	 </div>
-	 
 	 <p>あなたは部屋番号<input readonly type="text" name="usersRoomId" id="usersRoomId" value="">
 	     に入室中です
 	   </p>
@@ -163,15 +182,15 @@
 </select>
 
 
-
+<!--
 <input type="button" class="graphDistribution" value="グラフ配信" onclick="graphDistribution()">
   <input type="hidden" id="funcname" name="funcname" value="">
 </form>
+-->
 
 
 
-
-<div class="container" id="container">
+<div class="container" id="container" ontouchend="">
 <div class="buttons">
 <ul>
 <li><a class="raised1 type" href="javascript:void(0)" onclick="selectType([1]); return false;">1</a> 人口
@@ -387,6 +406,7 @@
 
 <div class="clearCanvas" id="clearCanvas">
   <input type="button" class="clearButton" value="グラフの？を消す" onclick="clearCanvas()">
+    <input type="button" class="testButton" value="test" onclick="alert($('#myFrame').width())">
 </div>
 
 </div> <!-- up -->
@@ -399,15 +419,16 @@
   
 <div class="wrapper" id="wrapper">
   <canvas id="myCanvas">
- <div id="chart_div" />
- </canvas>
+<div id="chart_div"></div>
+  </canvas>
+
 </div>
 
 
 </div><!-- maincontents  -->
 <!-- </body>-->
 
-
-</body>
 <script type="text/javascript" src="./js/scenario.js"></script>
+</body>
+
 </html>

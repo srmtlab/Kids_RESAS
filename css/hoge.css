@@ -12,13 +12,18 @@ body {
 #wrapper {
     height: 100%;
     width: 100%;
+    height: 1600px;
+    width: 1400px;
 }
 
 #myCanvas {
     z-index: 10;
     position: absolute;
     display: block;
-    /* width: 100%; */
+    cursor: pointer;
+/*    width: 100%;
+    height: 100%
+*/
     /* pointer-events: none; ここを入れるとcanvasへのマウスイベントが無視される */ 
     /* overflow: scroll; */
 }
@@ -100,10 +105,12 @@ html {
     -webkit-tap-highlight-color: transparent;
     transition: .3s ease-out;/*変化を緩やかに*/
 }
+/*
 .raised:hover{
-    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 0 1px 7px 0 rgba(0,0,0,0.12), 0 3px 1px -1px rgba(0,0,0,0.2);/*浮き上がるように*/
-}
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 0 1px 7px 0 rgba(0,0,0,0.12), 0 3px 1px -1px rgba(0,0,0,0.2);
 
+}
+*/
 #bgimg {
     position: relative;
 
@@ -122,7 +129,7 @@ html {
     border: 1px solid #aaa;
 
     /* この５行は必須 */
-    width: 400px;
+    width: 300px;
     height: 200px;
     position: absolute;
     display: none;

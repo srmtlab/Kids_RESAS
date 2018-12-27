@@ -5,8 +5,10 @@ var result = document.getElementById('result');
 //CSVの形式は
 //23,23210,1-1
 //都道府県コード,市町村コード,項目番号
+
 var loadArray;
 var arrayNum;
+/*
 // File APIに対応しているか確認
 if(window.File && window.FileReader && window.FileList && window.Blob) {
     function loadLocalCsv(e) {
@@ -62,7 +64,7 @@ function createTable(data) {
     }
     return table;
 }
-
+*/
 function nextArray() {
     if(loadArray[arrayNum]==null){
 	alert('シナリオは終了です。');
@@ -74,9 +76,10 @@ function nextArray() {
 	    console.log(arrayNum);
 	    
 	    numToGraph(loadArray[arrayNum]);
+	    console.log("現在の市町村:"+loadArray[arrayNum]);
 	    arrayNum++;
 	    $('#scenarioRow').val(arrayNum);
-	    console.log(loadArray[arrayNum]);
+	    console.log("次の市町村:"+loadArray[arrayNum]);
 	}
     }
 
