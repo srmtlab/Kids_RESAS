@@ -74,12 +74,31 @@ function nextArray() {
 	    alert('シナリオは終了です。');
 	}else{
 	    console.log(arrayNum);
-	    
-	    numToGraph(loadArray[arrayNum]);
-	    console.log("現在の市町村:"+loadArray[arrayNum]);
-	    arrayNum++;
-	    $('#scenarioRow').val(arrayNum);
-	    console.log("次の市町村:"+loadArray[arrayNum]);
+	    //arrayNum[0]:都道府県コード
+	    //arrayNum[1]:市町村コード
+	    //arrayNum[2]:関数番号
+
+	    var pcode = loadArray[arrayNum][0];
+	    $("#pref").val(pcode);
+	    var ccode = loadArray[arrayNum][1];
+	    console.log("prefC:"+pcode);
+	    var promise = citySet(ccode);/*.then(function(){
+		console.log("graphDistCitycode:"+data.codeNum.city.citycode);
+		console.log(value);
+		console.log($("#city").val());
+
+	    });*/
+
+	    promise.done(function(){
+		numToGraph(loadArray[arrayNum]);
+		//graphDistribution();
+		console.log($("#city").val());
+		console.log("現在の市町村:"+loadArray[arrayNum]);
+		arrayNum++;
+		$('#scenarioRow').val(arrayNum);
+		console.log("次の市町村:"+loadArray[arrayNum]);
+	    });
+
 	}
     }
 

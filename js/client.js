@@ -20,7 +20,12 @@ $(function () {
     receiveGraphDist();
     receiveEnterRoom();
     receiveQuiz();
+
+
+    
 });
+
+
 
 function showTeacherMode(){
 
@@ -30,24 +35,26 @@ function showTeacherMode(){
     $("#myCanvas").css({top:cStart+sceHeight});
 }
 
-function openDialog(){
+function shareQuiz(){
     var result = prompt( "クイズを入力してください" , "" );
 
     if(result){
 	console.log(" OK が押された:" + result);
 	$.ipop(result);
 	quizText = result;
+	socket.emit("shareQuiz",quizText);    
     }else{
 	console.log(" CANCEL が押された");
     }
 
 }
+/*
 function shareQuiz(){
     var quizText = document.getElementById("quizText").innerText;
-    socket.emit("shareQuiz",quizText);    
+    
 
 }
-
+*/
 function clearCanvas(){
     console.log("clear");
     var canvas = document.getElementById("myCanvas");
@@ -63,9 +70,10 @@ function sizing(cStart){
     console.log("In sizing:" + cStart);
     //$("#wrapper").height(document.body.clientHeight - $("#up").height());
     //alert("sinzing");
-    
-    $("#wrapper").height(1600);
-    $("#wrapper").width(1400);
+    var wrapperHeight = 1650;
+    var wrapperWidth = 1450;
+    $("#wrapper").height(wrapperHeight);
+    $("#wrapper").width(wrapperWidth);
 
     var newHeight = $("#wrapper").height();
     
@@ -93,6 +101,7 @@ function sizingIframe(cStart){
 	$("#myFrame").width(fWidth);
 	//$("#myFrame").width($("#wrapper").width());
 	$("#myFrame").innerWidth(fWidth);
+	$("#myFrame").innerHeight(fHeight);
 	console.log("fWidth: "+fWidth);
 	console.log("frameWidth: "+$("#myFrame").width());
 	console.log("innerHeight: "+$("#myFrame").innerWidth());
@@ -159,12 +168,14 @@ function canvasInitialize() {
     //続けて項目を選択した時に、前に表示している地図を削除する
     quesCoord = [];
     var node = document.getElementById('chart_div');
+    
     if(node != null){
         node.parentNode.removeChild(node);
         var node = document.getElementById('wrapper');
         node.parentNode.removeChild(node);
     }
-
+    
+    
     var wrapper = document.createElement('div');
     wrapper.setAttribute("id","wrapper");
 
@@ -190,7 +201,7 @@ function canvasInitialize() {
     chart_div.setAttribute("display","inline-block");//iframe問題用   
     
     wrapper.appendChild(chart_div);
-    document.getElementById("chart_div").style.WebkitOverlowScrolling = 'touch';
+    document.getElementById("chart_div").style.WebkitOverflowScrolling = 'touch';
     var container = document.getElementById("container");
     var rect = container.getBoundingClientRect();
     //var cStart = rect.top + rect.height + window.pageYOffset;
@@ -205,17 +216,51 @@ function canvasInitialize() {
     //iframe.setAttribute("min-width", "100%");
     iframe.setAttribute("width", "100%");
     iframe.setAttribute("height", "100%");
-    //iframe.setAttribute("width", "1400");
+    iframe.setAttribute("width", "1400");
     //iframe.setAttribute("height", "1600");
-
-    iframe.setAttribute("scrolling","auto");    //iframe問題用
+    
+    iframe.setAttribute("scrolling","no");    //iframe問題用
     iframe.setAttribute("display","block");
+    iframe.setAttribute("border","none");
+    iframe.setAttribute("overflow","auto");
     
     iframe.setAttribute("sandbox", "allow-same-origin allow-scripts allow-top-navigation");
+    iframe.setAttribute("onload","if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {var viewer = document.getElementById( '#myFrame' ); viewer.style.width = getComputedStyle( viewer ).width; viewer.style.height = getComputedStyle( viewer ).height; viewer.setAttribute( 'scrolling', 'no' );}");
+
+/*
+    var script = document.createElement("script");
+    var textNode = document.createTextNode("if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {var viewer = document.getElementById( '#myFrame' ); viewer.style.width = getComputedStyle( viewer ).width; viewer.style.height = getComputedStyle( viewer ).height; viewer.setAttribute( 'scrolling', 'no' );}");
+    script.appendChild(textNode);
+    iframe.appendChild(script);
+  */  
     document.getElementById("chart_div").appendChild(iframe); 
-    
 
+     
+    //kidsresas setIframe追記
+    /*
+    var chart_dummy = document.createElement('div');
+    chart_dummy.setAttribute("id","chart_dummy");
+    chart_dummy.setAttribute("overflow","auto");//iframe問題用
+    chart_dummy.setAttribute("display","inline-block");//iframe問題用
 
+    wrapper.appendChild(chart_dummy);
+    document.getElementById("chart_dummy").style.WebkitOverlowScrolling = 'touch';
+
+    var dummyframe = document.createElement('iframe');
+    dummyframe.setAttribute("id", "dummyFrame");
+    //iframe.setAttribute("width", "1px");
+    //iframe.setAttribute("min-width", "100%");
+    dummyframe.setAttribute("width", "100%");
+    dummyframe.setAttribute("height", "100%");
+    dummyframe.setAttribute("width", "1400");
+    dummyframe.setAttribute("height", "1600");
+
+    dummyframe.setAttribute("scrolling","auto");    //iframe問題用
+    dummyframe.setAttribute("display","block");
+    dummyframe.setAttribute("border","none");
+    dummyframe.setAttribute("src","");
+    document.getElementById("chart_dummy").appendChild(dummyframe);
+    */
     sizing(cStart);
     sizingIframe(cStart);
 
@@ -247,9 +292,12 @@ function receiveGraphDist(){
 	console.log(data);
 	console.log(data.funcName);
 	console.log(data.codeNum);
-	document.selbox.pref.selectedIndex = data.codeNum.pref;
+	var prefcode = data.codeNum.pref;
+	$("#pref").val(prefcode);
+	//document.selbox.pref.selectedIndex = data.codeNum.pref;
 
 
+	/*
 	var parent = document.getElementById("city");
 	
 	while (parent.firstChild) parent.removeChild(parent.firstChild);//市町村のセレクトボックス初期化
@@ -274,6 +322,13 @@ function receiveGraphDist(){
 	}).catch(function (error) {
 	    // 非同期処理失敗。呼ばれない
 	    console.log(error);
+	});
+	*/
+
+	var citycode = data.codeNum.city.citycode;
+	var promise = citySet(citycode);
+	promise.done(function(){
+	    window[data.funcName](); 
 	});
 	
 	//citySet(data.codeNum.city.citycode);
@@ -424,49 +479,101 @@ function socketRoomNum(){
 */
 
 function numToGraph(array) {
-    var flag = 1;
+
     console.log(array);
     var itemNum = array[2];
-    $("#pref").val(Number(array[0]));
-    console.log(Number(array[1]));
-    citySet(Number(array[1])).then(function(value){
-	//$("#city").val(value);
-	console.log(value);
 
-    }).catch(function (error) {
-	// 非同期処理失敗。呼ばれない
-	console.log(error);
-    });
-    //console.log(document.selbox.city.options[20].value);    
     switch( itemNum ){
     case '1-1':
-	linkToPopComp(flag,array);
+	linkToPopComp();
 	console.log("1-1");
 	break;
     case '1-2':
-	linkToPyramid(flag,array);
+	linkToPyramid();
 	console.log("1-2");
 	break;
     case '1-3':
-	linkToPopSum(flag,array);
+	linkToPopSum();
 	break;
     case '1-4':
-	linkToPopFur(flag,array);
+	linkToPopFur();
 	break;
     case '2-1':
-	linkToTourToVisitor(flag,array);
+	linkToTourToVisitor();
 	break;
     case '2-2':
-	linkToTourFromVisitor(flag,array);
+	linkToTourFromVisitor();
 	break;
     case '2-3':
-	linkToTourDest(flag,array);
+	linkToTourDest();
 	break;
     case '2-4':
-	linkToGuestCount(flag,array);
+	linkToGuestCount();
 	break;
     case '2-5':
-	linkToPopCircle(flag,array);
+	linkToPopCircle();
+	break;
+    case '3-1-1':
+	linkToMuniComp();
+	break;
+    case '3-1-2':
+	linkToMuniVal();
+	break;
+    case '3-1-3':
+	linkToMuniProd();
+	break;
+    case '3-2-1':
+	drawAgriChart();
+	break;
+    case '3-2-2':
+	linkToAgriLand();
+	break;
+    case '3-2-3':
+	linkToAgriSales();
+	break;
+    case '3-2-4':
+	linkToAgriAge();
+	break;
+    case '3-3-1':
+	linkToForestIncome();
+	break;
+    case '3-3-2':
+	linkToForestLand();
+	break;
+    case '3-4-1':
+	linkToFishery('1');
+	break;
+    case '3-4-2':
+	linkToFishery('3');
+	break;
+    case '3-4-3':
+	linkToFisheryBoat();
+	break;
+//3-5-1
+	
+    case '3-5-2':
+	linkToIndusTrans('3');
+	break;
+    case '3-5-3':
+	linkToIndusTrans('1');
+	break;
+//3-6-1
+    case '3-6-2-1':
+	linkToConsComm('1');
+	break;
+    case '3-6-2-2':
+	linkToConsComm('2');
+	break;
+
+    case '4-1':
+	linkToRegProd();
+	break;
+//4-2,4-3
+    case '4-2':
+	linkToMuniWages();
+	break;
+    case '4-3':
+	linkToMuniTaxes();
 	break;
     }
 	

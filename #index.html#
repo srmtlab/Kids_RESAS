@@ -98,7 +98,6 @@
 		 行目です
 	       </p>
 
-	       <input type="button" class="graphDistribution" value="グラフ配信" onclick="graphDistribution()">
 
 		 <input type="hidden" id="funcname" name="funcname" value="">
 		 </form>	       

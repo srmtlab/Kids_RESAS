@@ -149,9 +149,17 @@ function setIframe(linkTo){
     var container = document.getElementById("container");
     var rect = container.getBoundingClientRect();
     var cStart = $("#up").height();
-	var iframe = document.getElementById("myFrame");
+    var iframe = document.getElementById("myFrame");
+    console.log("beforeFrameSet"+$("#myFrame").width());
+
     iframe.setAttribute("src", linkTo);
-    
+    /*
+    var script = iframe.contentDocument.createElement("script");
+    var textNode = iframe.contentDocument.createTextNode("if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {var viewer = document.getElementById( '#myFrame' ); viewer.style.width = getComputedStyle( viewer ).width; viewer.style.height = getComputedStyle( viewer ).height; viewer.setAttribute( 'scrolling', 'no' );}");
+    script.appendChild(textNode);
+    iframe.appendChild(script); 
+    console.log("afterFrameSet"+$("#myFrame").width());    
+*/
 /*
     sizingIframe(cStart).then(function(){
 //	alert("test");
@@ -173,7 +181,7 @@ function setIframe(linkTo){
 //都道府県を選択した時に市町村を取得しドロップダウンリストに追加
 function citySet(num){
 
-    return new Promise(function(resolve) {
+    var d = new $.Deferred;
 	var baseUrl = "https://opendata.resas-portal.go.jp/";
 	var apiKey = "M1o2g9y0ORtM4StEcRPMBxiBwFr6lTPrZa9cXyJh";
 	var apiPath = "api/v1/cities?prefCode=";
@@ -208,10 +216,12 @@ function citySet(num){
 		
 		$("#city").val(num);
 		console.log($("#city").val());
+		d.resolve();
+
 	    }
 	    
 	});
-	
+    return d.promise();
 	/*
 	if(num){
 	    console.log(document.getElementById("city"));
@@ -219,8 +229,8 @@ function citySet(num){
 	 
 	}
 	*/ 
-	resolve(num);
-    });
+
+
     
     //    var canvas = document.getElementById("myCanvas");
     //var c = canvas.getContext("2d");
@@ -367,7 +377,7 @@ function linkToPopFur(flag,scenarioArray) {
 
 
 //RESASの生産分析の移輸出入収支額のグラフに直接リンクする
-function linkToRegProd(flag,scenarioArray) {
+function linkToRegProd() {
     canvasInitialize();
     content = 4//表示する内容{1:生産額,2:付加価値額,3:雇用者所得,4:移輸出入収支額}
     category = "-";//表示する分類{-:大分類,01~03:第n次産業} 
@@ -896,7 +906,7 @@ function linkToAgriSales(flag,scenarioArray) {
 }
 
 
-function linkToForestIncome(flag,scenarioArray) {
+function linkToForestIncome() {
 
     canvasInitialize();
     var prefnum = document.selbox.pref.selectedIndex;
@@ -925,7 +935,7 @@ function linkToForestIncome(flag,scenarioArray) {
 }
 
 
-function linkToForestLand(flag,scenarioArray) {
+function linkToForestLand() {
 
     canvasInitialize();
     var prefnum = document.selbox.pref.selectedIndex;
@@ -953,7 +963,7 @@ function linkToForestLand(flag,scenarioArray) {
 
 
 
-function linkToFishery(flag,scenarioArray,category) {
+function linkToFishery(category) {
 
     canvasInitialize();
     var prefnum = document.selbox.pref.selectedIndex;
@@ -982,7 +992,7 @@ function linkToFishery(flag,scenarioArray,category) {
 }
 
 
-function linkToIndusTrans(flag,scenarioArray,content) {
+function linkToIndusTrans(content) {
 
 
     canvasInitialize();
@@ -1010,7 +1020,7 @@ function linkToIndusTrans(flag,scenarioArray,content) {
 }
 
 
-function linkToMuniSales(flag,scenarioArray,industry,content) {
+function linkToMuniSales(industry,content) {
 
 
     /*
@@ -1039,7 +1049,7 @@ function linkToMuniSales(flag,scenarioArray,industry,content) {
 
 }
 
-function linkToConsComm(flag,scenarioArray,industry) {
+function linkToConsComm(industry) {
 
     canvasInitialize();
     var prefnum = document.selbox.pref.selectedIndex;
