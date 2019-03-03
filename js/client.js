@@ -48,13 +48,7 @@ function shareQuiz(){
     }
 
 }
-/*
-function shareQuiz(){
-    var quizText = document.getElementById("quizText").innerText;
-    
 
-}
-*/
 function clearCanvas(){
     console.log("clear");
     var canvas = document.getElementById("myCanvas");
@@ -359,26 +353,6 @@ function receiveQuiz(){
 
 }
 
-/*
-function socketRoomInitialize(){
-    socket.on("roomInitialize", function(rooms){
-	console.log("roomInit");
-	console.log("rooms:"+JSON.stringify(rooms));
-	var roomVals = $("#roomNumber").children();
-	    for( var i=0; i<roomVals.length; i++ ){
-		var roomName = roomVals.eq(i).val();
-		var roomText = roomVals.eq(i).text();
-		var bar = roomText.match(/(\d+)人使用中/)[1];
-		console.log(roomName+":"+roomText+":"+bar);
-		console.log("rooms:"+rooms[roomName]);
-		console.log(roomText.replace(/\d+人使用中/,rooms[roomName]+"人使用中"));
-		roomVals.eq(i).text(roomText.replace(/\d+人使用中/,rooms[roomName]+"人使用中"));
-	    }
-
-    });
-}
-*/
-
 function throttle(targetFunc, time) {
     var _time = time || 100;
     clearTimeout(this.timer);
@@ -446,37 +420,6 @@ function getRandomNumber() {
    var randnum = Math.floor( Math.random() * 1000 );
    document.getElementById("randomNum").innerHTML = randnum;
 }
-/*
-function roomSelect(){
-    var roomName = document.selbox.roomNumber.value;
-
- 
-    console.log(roomName);
-    socket.emit("init", {value:roomName});
-    userRoom = roomName;
-
-}
-
-
-function socketRoomNum(){
-    socket.on("roomCalc", function(rooms){
-	console.log("roomCalc");
-	console.log(rooms);
-        console.log("rooms:"+JSON.stringify(rooms));
-        var roomVals = $("#roomNumber").children();
-            for( var i=0; i<roomVals.length; i++ ){
-                var roomName = roomVals.eq(i).val();
-                var roomText = roomVals.eq(i).text();
-                var bar = roomText.match(/(\d+)人使用中/)[1];
-                console.log(roomName+":"+roomText+":"+bar);
-                console.log("rooms:"+rooms[roomName]);
-                console.log(roomText.replace(/\d+人使用中/,rooms[roomName]+"人使用中"));
-                roomVals.eq(i).text(roomText.replace(/\d+人使用中/,rooms[roomName]+"人使用中"));
-            }
-    });
-
-}
-*/
 
 function numToGraph(array) {
 

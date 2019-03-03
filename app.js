@@ -61,7 +61,7 @@ io.sockets.on("connection", function (socket) {
 
     console.log("connected");
 
-    var socketRooms = {};//"room1":0,"room2":0,"room3":0,"room4":0,"room5":0};
+    var socketRooms = {};
     var adapterRoom = io.sockets.adapter.rooms;
     console.log("adapterrooms:"+JSON.stringify(adapterRoom));
     for(key in adapterRoom){
@@ -74,45 +74,13 @@ io.sockets.on("connection", function (socket) {
     }
 
     console.log("socket.id:"+socket.id);
-    //io.to(socket.id).emit("roomInitialize", socketRooms);
-
-    //console.log("socketRoom:"+JSON.stringify(socketRooms));
 
 
     socket.on("init", function(data) {
 	roomName = data.value;
 	console.log(roomName);
-	//socket.set("room",room);
+
 	socket.join(roomName);
-	/*
-	var roomusers = io.sockets.adapter.rooms[roomName]["length"];
-	console.log("rooms:"+JSON.stringify(io.sockets.adapter.rooms[roomName]));
-	socketRooms[roomName] = roomusers;
-	*/
-	/*
-	  var adapterRoom = io.sockets.adapter.rooms;
-	  console.log("adapterrooms:"+JSON.stringify(adapterRoom));
-	  for(key in adapterRoom){
-	  if ( key.match(/room/)) {
-	  //strにhogeを含む場合の処理                                                                                                                                                                                                       
-	  console.log( key  + ":" + JSON.stringify(adapterRoom[key]) + "\n");
-	  socketRooms[key] = adapterRoom[key]["length"];
-	  }
-	  }
-	*/	    
-
-        //var adapterRoom = io.sockets.adapter.rooms;//現在のルーム情報を取得                                                                                                                                                                                 
-        //console.log("adapterrooms:"+JSON.stringify(adapterRoom));
-	
-	/*
-        for(key in socketRooms){
-            if(adapterRoom[key]){//取得したルーム情報のキーにルーム番号が含まれていた場合にルーム接続数を更新                                                                                                                                               
-                //if ( key.match(/room/)) {                                                                                                                                                                                                                 
-                console.log( key  + ":" + JSON.stringify(adapterRoom[key]) + "\n");
-                socketRooms[key] = adapterRoom[key]["length"];
-
-
-            }else{//取得したルーム情報のキーにルーム番号が含まれていない場合そのルームは存在していない                                                                                                                                                      
                 socketRooms[key] = 0;
             }
         }
@@ -158,7 +126,8 @@ io.sockets.on("connection", function (socket) {
 	console.log(data);
 	socket.broadcast.to(roomName).emit("shareQuiz", data);
     });
-    
+
+/*
     //機能の接続による遅延確認のための機能
     socket.on("fileAppending", function (data) {
 	console.log(data);
@@ -175,25 +144,10 @@ io.sockets.on("connection", function (socket) {
 	    console.log(err);
 	});
     });
-    
+*/  
     socket.on("disconnect", function() {	
 	console.log("disconnected:"+socket.id);
-	/*
-	var adapterRoom = io.sockets.adapter.rooms;//現在のルーム情報を取得
-	console.log("adapterrooms:"+JSON.stringify(adapterRoom));
-	for(key in socketRooms){
-	    if(adapterRoom[key]){//取得したルーム情報のキーにルーム番号が含まれていた場合にルーム接続数を更新
-		//if ( key.match(/room/)) {
-		console.log( key  + ":" + JSON.stringify(adapterRoom[key]) + "\n");
-		socketRooms[key] = adapterRoom[key]["length"];
-		
-		
-	    }else{//取得したルーム情報のキーにルーム番号が含まれていない場合そのルームは存在していない
-		socketRooms[key] = 0;
-	    }
-	}
-	io.emit("roomInitialize",socketRooms);
-	*/
+
     });
     
 });
