@@ -81,14 +81,7 @@ io.sockets.on("connection", function (socket) {
 	console.log(roomName);
 
 	socket.join(roomName);
-                socketRooms[key] = 0;
-            }
-        }
 
-	
-	console.log(JSON.stringify(socketRooms))
-	io.emit("roomCalc",socketRooms);
-	*/
     });
     console.log('コネクション数',socket.client.conn.server.clientsCount);
 
