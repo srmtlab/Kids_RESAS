@@ -5,6 +5,8 @@ var width = 40;
 var userRoom;
 var sceHeight;
 
+
+//クライアントをサーバのソケットに接続
 $(function () {
     //socket = io({path: '/socket.io/'});
     socket = io({path: '/gtskler/socket.io/'});
