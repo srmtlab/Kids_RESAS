@@ -54,14 +54,16 @@ server.listen(PORT);
 // socket.IOを用いたリアルタイムWebを実装します。                                                                     
 var io = socketIO.listen(server);
 //io.path('/gtskler');
-// 接続されたら、connected!とコンソールにメッセージを表示します。                                                     
+
+//クライアントからサーバへのソケット接続処理
 io.sockets.on("connection", function (socket) {
 
     var roomName = "";
 
     console.log("connected");
 
-    var socketRooms = {};
+    
+    var socketRooms = {}; //ルーム機能で作成された部屋名保存用配列
     var adapterRoom = io.sockets.adapter.rooms;
     console.log("adapterrooms:"+JSON.stringify(adapterRoom));
     for(key in adapterRoom){
@@ -75,7 +77,7 @@ io.sockets.on("connection", function (socket) {
 
     console.log("socket.id:"+socket.id);
 
-
+    /*
     socket.on("init", function(data) {
 	roomName = data.value;
 	console.log(roomName);
@@ -83,9 +85,11 @@ io.sockets.on("connection", function (socket) {
 	socket.join(roomName);
 
     });
+    */
     console.log('コネクション数',socket.client.conn.server.clientsCount);
 
     //ルーム入室機能
+    //入力された部屋番号に入室させる
     socket.on("enter", function (data) {
 	console.log(data);
 	roomName = data.value;
@@ -95,7 +99,8 @@ io.sockets.on("connection", function (socket) {
 	io.to(socket.id).emit("enter",{"value":roomName});
     });
 
-    //疑問点共有機能
+    //マーク共有機能
+    //同じ部屋番号のユーザにマークを共有
     socket.on("clicked", function (data) {
         console.log(data);
         socket.broadcast.to(roomName).emit("clicked", data);
@@ -137,7 +142,8 @@ io.sockets.on("connection", function (socket) {
 	    console.log(err);
 	});
     });
-*/  
+*/
+    //ソケット通信が切断されたユーザのidを表示
     socket.on("disconnect", function() {	
 	console.log("disconnected:"+socket.id);
 

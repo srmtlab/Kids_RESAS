@@ -19,20 +19,22 @@ var category;
 var fHeight = 1600;
 var fWidth = 1400;
 
+
+//セレクトボックスで選択された都道府県から市町村コードを取得
 function setCode() {
 
     prefnum = document.selbox.pref.selectedIndex;
     prefcode = document.selbox.pref.options[prefnum].value;
     prefname = document.selbox.pref.options[prefnum].innerText;
     citynum = document.selbox.city.selectedIndex;
-    console.log("bsetcode:"+citycode);
+    
     citycode = $("#city").val();
     //citycode = document.selbox.city.options[citynum].value;
-    console.log("asetcode:"+citycode);
 
 }
 
 
+//項目番号ボタンを押したときに下の階層の項目番号ボタンを表示していく
 function selectType(types) {
     
     //続けて項目を選択した時に、前に表示している地図を削除する
@@ -66,17 +68,9 @@ function selectType(types) {
     console.log("hidden: "+types);
     hiddenButtons(types);
     
-    //console.log(removeSelector[0]);
-    //$(removeSelector).removeClass("hidden");
-    
     var container = document.getElementById("container");
     var rect = container.getBoundingClientRect();
-    /*
-      var cStart = $("#up").height();//rect.top + rect.height + window.pageYOffset;
-      console.log("canvas開始位置:" + cStart);
-      
-      sizing(cStart);
-    */
+
 }
 
 
@@ -125,26 +119,9 @@ function buryFunc(funcName){
 
 }
 
+
+//iframe要素にRESASのグラフを追加する
 function setIframe(linkTo){
-
-
-    socket.emit("fileAppending","グラフ選択");
-    console.log("グラフ選択");
-    //iframe.setAttribute("src", linkTo);
-    //iframe.setAttribute("scrolling","auto");
-
-    /*
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute("id", "myFrame");
-    document.getElementById("chart_div").appendChild(iframe);
-    */
-    //document.getElementById("myCanvas").appendChild(iframe);
-    console.log("グラフ表示");
-
-
-    socket.emit("fileAppending","グラフ表示");
-
-
     
     var container = document.getElementById("container");
     var rect = container.getBoundingClientRect();
@@ -153,28 +130,7 @@ function setIframe(linkTo){
     console.log("beforeFrameSet"+$("#myFrame").width());
 
     iframe.setAttribute("src", linkTo);
-    /*
-    var script = iframe.contentDocument.createElement("script");
-    var textNode = iframe.contentDocument.createTextNode("if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {var viewer = document.getElementById( '#myFrame' ); viewer.style.width = getComputedStyle( viewer ).width; viewer.style.height = getComputedStyle( viewer ).height; viewer.setAttribute( 'scrolling', 'no' );}");
-    script.appendChild(textNode);
-    iframe.appendChild(script); 
-    console.log("afterFrameSet"+$("#myFrame").width());    
-*/
-/*
-    sizingIframe(cStart).then(function(){
-//	alert("test");
 
-	//iframe.setAttribute("src", linkTo);
-	setTimeout(iframe.setAttribute("src", linkTo),5000);
-    });
-*/
-//    setTimeout(sizingIframe(cStart),5000);
-    //sizingIframe(cStart);
-    //setTimeout(iframe.setAttribute("src", linkTo),5000);
-    //alert("setIframe:"+$("#myFrame").width());
-    //
-//    var iframe = document.getElementById("myFrame");
-//    
 }
 
 
@@ -269,20 +225,16 @@ function linkToPopComp(flag,scenarioArray) {
     console.log("1-1の市町村コード:"+citycode);
     var linkTo = "https://resas.go.jp/population-composition/#/transition/"+prefcode+"/"+citycode+"/2015/"+scope+"/9.139551352398794/35.07185405/137.44284295";
     console.log(linkTo);
-    //window.open(linkTo,'_blank');
-//linkToから始まるfunction全部にwindow.open~をコメントアウトして
-//以下の部分を他のところにコピペしてください
-/////////////////////////////////////////    
+
     setIframe(linkTo);
 
     buryFunc("linkToPopComp");
-//////////////////////////////////////////
 
 }
 
 
 //RESASの人口ピラミッドのページに直接リンクする
-//ここにコピペ
+//1-2
 function linkToPyramid(flag,scenarioArray) {
     
     canvasInitialize();
@@ -313,6 +265,7 @@ function linkToPyramid(flag,scenarioArray) {
 }
 
 //RESASの人口増減率のページに直接リンクする
+//1-3
 function linkToPopSum(flag,scenarioArray) {
     canvasInitialize();
     if(!flag){
@@ -347,6 +300,7 @@ function linkToPopSum(flag,scenarioArray) {
 
 
 //RESASの人口増減率のページに直接リンクする
+//1-4
 function linkToPopFur(flag,scenarioArray) {
 //グラフは市町村単位でのみ表示
     canvasInitialize();
@@ -377,6 +331,8 @@ function linkToPopFur(flag,scenarioArray) {
 
 
 //RESASの生産分析の移輸出入収支額のグラフに直接リンクする
+//4-1
+
 function linkToRegProd() {
     canvasInitialize();
     content = 4//表示する内容{1:生産額,2:付加価値額,3:雇用者所得,4:移輸出入収支額}
@@ -412,7 +368,9 @@ function linkToRegProd() {
 
 }
 
+/*
 //RESASの企業海外取引額分析のグラフに直接リンクする
+//
 function linkToIndusOverTrans(flag,scenarioArray,item) {
 
     canvasInitialize();
@@ -429,7 +387,10 @@ function linkToIndusOverTrans(flag,scenarioArray,item) {
     setIframe(linkTo);
     buryFunc("linkToIndusOverTrans");
 }
+*/
 
+
+/*
 //RESASの不動産取引のグラフに直接リンクする
 function linkToTownTrans(flag,scenarioArray,type) {
 
@@ -452,8 +413,10 @@ function linkToTownTrans(flag,scenarioArray,type) {
     setIframe(linkTo);
     buryFunc("linkToTownTrans");
 }
+*/
 
 //RESASの製造品出荷額等のグラフに直接リンクする
+//3-5-1
 function linkToMuniManu(flag,scenarioArray,category) {
 
     canvasInitialize();
@@ -477,6 +440,7 @@ function linkToMuniManu(flag,scenarioArray,category) {
 
 
 //RESASの一人あたり賃金に直接リンクする
+//4-2
 function linkToMuniWages(flag,scenarioArray) {
 
     canvasInitialize();
@@ -499,7 +463,8 @@ function linkToMuniWages(flag,scenarioArray) {
     buryFunc("linkToMuniWages");
 }
 
-//RESASの一人あたり地方税に直接リンクする                                                                                                                     
+//RESASの一人あたり地方税に直接リンクする
+//4-3
 function linkToMuniTaxes(flag,scenarioArray) {
 
     canvasInitialize();
@@ -523,6 +488,7 @@ function linkToMuniTaxes(flag,scenarioArray) {
 }
 
 //RESASの国籍別訪問者数のグラフに直接リンクする
+//2-1
 function linkToTourToVisitor(flag,scenarioArray) {
 //都道府県単位でのみ選択
 //市町村コードは県内ならどれでも可、URLを見る限り県庁所在地で固定している模様
@@ -563,7 +529,8 @@ function linkToTourToVisitor(flag,scenarioArray) {
 }
 
 
-//RESASの国籍別訪問者数のグラフに直接リンクする                                                                                                                        
+//RESASの国籍別訪問者数のグラフに直接リンクする
+//2-2
 function linkToTourFromVisitor(flag,scenarioArray) {
 //都道府県単位でのみ選択                                                                                                                                               
 //市町村コードは県内ならどれでも可、URLを見る限り県庁所在地で固定している模様                                                                                          
@@ -591,7 +558,8 @@ function linkToTourFromVisitor(flag,scenarioArray) {
 }
 
 
-//RESASの観光資源（目的地）のグラフに直接リンクする                                                                                                                                         //修正の余地あり                              
+//RESASの観光資源（目的地）のグラフに直接リンクする                            //2-3
+
 function linkToTourDest(flag,scenarioArray) {
     canvasInitialize();
     var year = 2017;
@@ -644,6 +612,7 @@ https://resas.go.jp/tourism-destination/#/toList/9.139551352398794/35.07185405/1
 
 
 //RESASの延べ宿泊者数のグラフに直接リンクする
+//2-4
 function linkToGuestCount(flag,scenarioArray) {
 
     canvasInitialize();
@@ -674,6 +643,7 @@ function linkToGuestCount(flag,scenarioArray) {
 }
 
 //RESASの昼夜間人口のグラフに直接リンクする
+//2-5
 function linkToPopCircle(flag,scenarioArray) {
 
 
@@ -705,6 +675,7 @@ function linkToPopCircle(flag,scenarioArray) {
 
 
 //RESASの企業数のページに直接リンクする
+//3-1-1
 function linkToMuniComp(flag,scenarioArray) {
     canvasInitialize();
     setCode();
@@ -727,6 +698,7 @@ function linkToMuniComp(flag,scenarioArray) {
 }
 
 //RESASの企業数のページに直接リンクする
+//3-1-2
 function linkToMuniVal(flag,scenarioArray) {
     canvasInitialize();
     var prefnum = document.selbox.pref.selectedIndex;
@@ -752,6 +724,8 @@ function linkToMuniVal(flag,scenarioArray) {
 
 }
 
+//労働生産性
+//3-1-3
 function linkToMuniProd(flag,scenarioArray) {
 
     canvasInitialize();
@@ -780,6 +754,7 @@ function linkToMuniProd(flag,scenarioArray) {
 }
 
 //農業部門別販売金額を表示
+//3-2-1
 function drawAgriChart(flag,scenarioArray) {
 
     //canvas,wrapperを初期化
@@ -846,6 +821,7 @@ function drawAgriChart(flag,scenarioArray) {
 }
 
 //経営耕地面積
+//3-2-2
 function linkToAgriLand(flag,scenarioArray) {
 
 
@@ -878,8 +854,9 @@ function linkToAgriLand(flag,scenarioArray) {
 
 }
 
+//農産物販売金額
+//3-2-3
 function linkToAgriSales(flag,scenarioArray) {
-
 
     canvasInitialize();
     var prefnum = document.selbox.pref.selectedIndex;
@@ -905,7 +882,8 @@ function linkToAgriSales(flag,scenarioArray) {
 //https://resas.go.jp/agriculture-sales/#/graph/9.670066069097572/35.07185405/137.44284295/23/23210/2(表示レベルを指定する)/2010(表示年を指定する)/2(表示する内容を指定する)/-(農業部門を指定する)/-(表示する内容を指定する)
 }
 
-
+//林業総収入
+//3-3-1
 function linkToForestIncome() {
 
     canvasInitialize();
@@ -934,7 +912,8 @@ function linkToForestIncome() {
 
 }
 
-
+//林野面積
+//3-3-2
 function linkToForestLand() {
 
     canvasInitialize();
@@ -961,8 +940,9 @@ function linkToForestLand() {
 }
 
 
-
-
+//引数categoryによって選択
+//3-4-1:海面漁獲物等販売金額
+//3-4-2:海面養殖販売金額
 function linkToFishery(category) {
 
     canvasInitialize();
@@ -991,7 +971,9 @@ function linkToFishery(category) {
 
 }
 
-
+//引数contentによって選択
+//3-5-2:製造業部門別販売金額
+//3-5-3:事業所数
 function linkToIndusTrans(content) {
 
 
@@ -1020,6 +1002,8 @@ function linkToIndusTrans(content) {
 }
 
 
+//商業の年間商品販売額
+//3-6-1
 function linkToMuniSales(industry,content) {
 
 
@@ -1049,6 +1033,8 @@ function linkToMuniSales(industry,content) {
 
 }
 
+//商業の事業所数
+//3-6-2
 function linkToConsComm(industry) {
 
     canvasInitialize();
@@ -1101,6 +1087,8 @@ function linkToFisheryBoat(flag,scenarioArray) {
 
 }
 
+//農業経営者・就業人口の年齢構成
+//3-2-4
 function linkToAgriAge(flag,scenarioArray) {
     canvasInitialize();
     var prefnum = document.selbox.pref.selectedIndex;
