@@ -1,4 +1,15 @@
-about emacs, vim, Mac OS X
+# OS generated files
 .DS_Store
 *~
 *.swp
+
+# Logs
+logs
+*.log
+npm-debug.log.*
+
+# Optional npm cache directory
+.npm
+
+# Dependency directories
+node_modules/
