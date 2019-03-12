@@ -1,7 +1,7 @@
 Kids RESAS
 ====
-Kids RESASは，RESASを使用して社会科授業の補助を行います．  
-Kids RESASは，[グラフツクラー (GitHub)](https://github.com/srmtlab/Kids_RESAS/tree/gtskler)を継承し作成されております．
+Kids RESAS is to assist class of social studies using RESAS.  
+This project is taken over from the [gtskler (GitHub)](https://github.com/srmtlab/Kids_RESAS/tree/gtskler).  
 
 # Dependency
 - Node.js
