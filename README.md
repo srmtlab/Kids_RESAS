@@ -1,8 +1,12 @@
-# gtskler
-RESASを用いた小学校社会科授業支援システム「グラフツクラー」
+Kids RESAS
+====
+Kids RESAS is to assist class of social studies using RESAS  
+This project is taken over for [gtskler](https://github.com/srmtlab/Kids_RESAS/tree/gtskler)
 
-## 実行方法
+# Dependency
+- Node.js
 
+## How to start
   - Node.jsをインストール
   - fs,url,path,mime,http,socket.ioモジュールをインストール
   - リバースプロキシを設定
@@ -65,7 +69,8 @@ RESASを用いた小学校社会科授業支援システム「グラフツクラ
     - ユーザがシナリオを編集できるように
 
 # Author
-- Yoshinori Miyawaki 
+- Akira Kamiya
+- Code for Aichi
 
 # LICENCE
 - The MIT Licence (MIT)
