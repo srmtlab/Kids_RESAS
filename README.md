@@ -1,7 +1,7 @@
 Kids RESAS
 ====
 Kids RESAS is to assist class of social studies using RESAS  
-This project is taken over for [gtskler](https://github.com/srmtlab/Kids_RESAS/tree/gtskler)
+This project is taken over from the [gtskler](https://github.com/srmtlab/Kids_RESAS/tree/gtskler)
 
 # Dependency
 - Node.js
