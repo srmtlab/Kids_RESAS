@@ -4,7 +4,9 @@ Kids RESAS is to assist class of social studies using RESAS.
 This project is taken over from the [gtskler (GitHub)](https://github.com/srmtlab/Kids_RESAS/tree/gtskler).  
 
 # Dependency
-- Node.js
+- Node.js v10.x
+- npm 6.x
+- MongoDB 
 
 ## How to start
   - Node.jsをインストール
