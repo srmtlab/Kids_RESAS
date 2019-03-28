@@ -51,7 +51,8 @@ This project is taken over from the [gtskler (GitHub)](https://github.com/srmtla
      
 # Author
 - Akira Kamiya
-- Code for Aichi
+- Tsuyoshi Ureshino
+  - Code for Aichi
 
 # LICENCE
 - The MIT Licence (MIT)
