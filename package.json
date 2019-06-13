@@ -1,0 +1,26 @@
+{
+  "name": "kidsresas",
+  "version": "1.0.0",
+  "description": "Web App is to assist class of social studies using RESAS.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srmtlab/Kids_RESAS.git"
+  },
+  "keywords": [
+    "assist"
+  ],
+  "author": "srmtlab",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/srmtlab/Kids_RESAS/issues"
+  },
+  "homepage": "https://github.com/srmtlab/Kids_RESAS#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
+}
