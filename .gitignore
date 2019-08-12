@@ -1,15 +1,19 @@
-# OS generated files
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel 5 & Lumen specific
+/public/hot
+/public/storage
+
+/storage/*.key
+/.vagrant
+Homestead.json
+Homestead.yaml
+.env
+
+# files about emacs, vim, Mac OS X
 .DS_Store
 *~
 *.swp
-
-# Logs
-logs
-*.log
-npm-debug.log.*
-
-# Optional npm cache directory
-.npm
-
-# Dependency directories
-node_modules/
