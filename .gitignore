@@ -17,3 +17,6 @@ Homestead.yaml
 .DS_Store
 *~
 *.swp
+
+# for PhpStorm
+_ide_helper.php
