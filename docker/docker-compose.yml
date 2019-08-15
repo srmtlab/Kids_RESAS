@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    links:
+      - mysql:mysql
+    depends_on:
+      - mysql
+    command: 'dockerize
+    -wait tcp://mysql:3306
+    -timeout 60s
+    sh'
+    tty: true
+    restart: unless-stopped
+    volumes:
+      - ../../src:/opt/Kids_RESAS
+    ports:
+      - 127.0.0.1:8000:8000
+
+  mysql:
+    image: mysql:8.0.17
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
