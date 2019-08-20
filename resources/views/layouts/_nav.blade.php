@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-    <a class="navbar-brand" href="{{route('home')}}">{{ config('app.name') }}</a>
+    <a class="navbar-brand" href="{{route('root')}}">{{ config('app.name') }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -8,7 +8,7 @@
         <ul class="navbar-nav mr-auto">
             @if (Auth::check())
                 <li class="nav-item">
-                    <a class="nav-link" href="#">教室作成</a>
+                    <a class="nav-link" href="{{ route('classroom.create') }}">教室作成</a>
                 </li>
             @endif
         </ul>
