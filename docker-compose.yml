@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  rails: &rails
+    build:
+      context: ./docker
+      dockerfile: ./Dockerfile
+    image: kidsresas_development_test_rails
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    env_file: 
+      - ./.envs/.development/.rails
+      - ./.envs/.development/.mysql
+    command: /start
+
+  mysql:
+    image: mysql:8.0.18
+    volumes:
+      - kidsresas_development_test_mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    env_file: 
+      - ./.envs/.development/.mysql
+  
+  redis:
+    image: redis:5.0.7-alpine
+    
+volumes:
+  kidsresas_development_test_mysql_data:
