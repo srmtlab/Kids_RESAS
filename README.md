@@ -1,28 +1,29 @@
-SelfcareSystem
+KidsRESAS
 ====
-Web application to support Developmental Disabilities.
+Web application is to assist class of social studies using RESAS.
 
 ## Requirement
 - ruby 2.6.5
-    - rails 5.2.3
+    - rails 5.2.4
 
 ## For developer
 ```
-# create and launch development environment
-git clone https://github.com/srmtlab/SelfcareSystem.git
-cd SelfcareSystem
+### create and launch development environment
+git clone https://github.com/srmtlab/KidsRESAS.git
+cd KidsRESAS
 docker-compose up -d
-docker-compose exec rails bundle exec rails db:create
-docker-compose exec rails bundle exec rails s -p 3000 -b '0.0.0.0'
-
-# launch development environment
-docker-compose up -d
-docker-compose exec rails bundle exec rails s -p 3000 -b '0.0.0.0'
-
 # railsコンテナに入る
 docker-compose exec rails sh
+bundle exec rails db:create
+bundle exec rails s -p 3000 -b '0.0.0.0'
 
-# MySqlコンテナに入る
+### launch development environment
+docker-compose up -d
+# railsコンテナに入る
+docker-compose exec rails sh
+bundle exec rails s -p 3000 -b '0.0.0.0'
+
+### MySqlコンテナに入る
 docker-compose exec mysql sh
 ```
 
@@ -63,8 +64,7 @@ bundle exec rails generate migration AddBasicInfoToUsers
 # カラムを削除する
 bundle exec rails g migration Removeカラム名Fromテーブル名
 
-
-
+-----------------------------
 # migrate（MySQLにマイグレーションファイルの内容を適応する）
 bundle exec rails db:migrate
 ```
@@ -75,7 +75,6 @@ docker-compose exec rails sh
 
 # db/seeds.rbを編集 : 参考にすること
 bundle exec rails db:seed
-
 ```
 
 #### 参考
@@ -88,14 +87,14 @@ bundle exec rails db:seed
 git checkout -b shimizu
 
 # ブランチの切り替え
-git checkout develop
+git checkout <branch name>
 ```
 
 # Authors
-- Kento Yasuda
-- Yota Shimizu
-- S'lounge
+- Ayaha Suenaga
 - Akira Kamiya
+- Shota Naito
+- Youta Sakurai
   
 # LICENCE
 - The MIT LICENCE (MIT)
