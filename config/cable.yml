@@ -1,16 +1,15 @@
 default: &default
-  adapter: redis
+  adapter: redis  
   host: <%= ENV["REDIS_HOST"] %>
   port: <%= ENV["REDIS_PORT"] %>
-  
+
 development:
   <<: *default
-  channel_prefix: kidsresas_development
+  channel_prefix: <%= ENV["REDIS_CHANNEL_PREFIX"] %>
 
 test:
-  <<: *default
-  channel_prefix: kidsresas_test
+  adapter: test
 
 production:
   <<: *default
-  channel_prefix: kidsresas_production
+  channel_prefix: <%= ENV["REDIS_CHANNEL_PREFIX"] %>

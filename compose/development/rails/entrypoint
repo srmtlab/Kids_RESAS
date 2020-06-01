@@ -1,9 +1,0 @@
-#!/bin/sh
-
-set -o errexit
-set -o pipefail
-set -o nounset
-
-dockerize -wait tcp://${MYSQL_HOST}:${MYSQL_PORT} -wait tcp://${REDIS_HOST}:${REDIS_PORT} -timeout 60s
-
-exec "$@"
