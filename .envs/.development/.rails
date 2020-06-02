@@ -1,8 +1,6 @@
-# General
-# ------------------------------------------------------------------------------
-SECRET_KEY_BASE=7a3f20b035f747224f3dd8a77aebd6c5b3dfac22609309c5c0d96c0304bb08812783d5fd05aa9f9177899608feb8289d2acc3b35f93afa381393171563401b1d
+RAILS_MASTER_KEY=15e27cae61d758e83fdb012a3df89c9d
+RAILS_ENV=development
 
 # REDIS
 # ------------------------------------------------------------------------------
-REDIS_HOST=redis
-REDIS_PORT=6379
+REDIS_CHANNEL_PREFIX=kidsresas_development
