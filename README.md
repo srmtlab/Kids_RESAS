@@ -19,10 +19,10 @@ Start for Production
 ==========
 
 ### Using docker-compose
-- Under Construction
+- Under Construction :construction:
 
 ### On-premise
-- Under Construction
+- Under Construction :construction:
 
 Development
 ==========
@@ -30,6 +30,7 @@ Development
 #### Note
 If you want to develop this app locally, you should use Docker, docker-compose.
 
+### How to set up the development environment.
 ```
 git clone -b develop https://github.com/srmtlab/KidsRESAS.git
 cd KidsRESAS
