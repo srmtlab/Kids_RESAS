@@ -7,7 +7,7 @@ KidsRESAS is the system to assist class of social studies using RESAS.
 KidsRESAS has been developed as successor system since 2020 in order to overcome the technical issues of [gtskler](https://github.com/srmtlab/KidsRESAS/tree/gtskler).  
 
 ## Online demo
-- Under Construction
+- Under Construction :construction:
 
 ## Requirement
 - Ruby 2.7.1
