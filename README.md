@@ -1,24 +1,48 @@
-# README
+KidsRESAS
+====
+Web application is to assist class of social studies using RESAS.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Description
+KidsRESAS is the system to assist class of social studies using RESAS.  
+KidsRESAS has been developed as successor system since 2020 in order to overcome the technical issues of [gtskler](https://github.com/srmtlab/KidsRESAS/tree/gtskler).  
 
-Things you may want to cover:
+## Online demo
+- Under Construction
 
-* Ruby version
+## Requirement
+- Ruby 2.7.1
+    - rails 6.0.3
+- MySQL 8.0.19
+- Redis 6.0.4
 
-* System dependencies
+Start for Production
+==========
 
-* Configuration
+### Using docker-compose
+- Under Construction
 
-* Database creation
+### On-premise
+- Under Construction
 
-* Database initialization
+Development
+==========
 
-* How to run the test suite
+#### Note
+If you want to develop this app locally, you should use Docker, docker-compose.
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+git clone -b develop https://github.com/srmtlab/KidsRESAS.git
+cd KidsRESAS
 
-* Deployment instructions
+docker-compose up
+```
+and access to http://localhost:8000
 
-* ...
+## Authors
+- Ayaha Suenaga
+- [Akira Kamiya (GitHub)](https://github.com/akamiya208)
+
+## LICENCE
+- The MIT LICENCE (MIT)
+
+## References
