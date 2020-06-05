@@ -62,6 +62,7 @@ class HomeController < ApplicationController
 
     def index
     end
+end
 ```
 app/views/home/index.html.erb を開き，HTMLのコード（何でもいいです）を記述し保存してみましょう．  
 http://localhost:3000/ にアクセスすると画面が変わっていると思います．こんな感じなんだというのを掴んでいただければ十分です．
