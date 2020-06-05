@@ -50,7 +50,7 @@ RailsのMVCモデルについては，[この記事](https://www.javadrive.jp/ra
 ### Controllerの作成
 コントローラーの作成をしてみましょう．今回は，「ホーム」コントローラーを作成してみます（一番最初に訪れるページなので）．以下のコマンドを入力してみましょう．
 ```bash
-rails generate controller home
+bundle exec rails generate controller home
 ```
 config/routes.rb に以下を入力してみましょう．
 ```bash
