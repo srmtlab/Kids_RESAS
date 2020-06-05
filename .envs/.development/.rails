@@ -1,6 +1,8 @@
 RAILS_MASTER_KEY=15e27cae61d758e83fdb012a3df89c9d
 RAILS_ENV=development
 
+RAILS_SPROCKETS_CACHE=/rails_sprockets_cache
+
 # REDIS
 # ------------------------------------------------------------------------------
 REDIS_CHANNEL_PREFIX=kidsresas_development

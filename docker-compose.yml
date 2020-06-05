@@ -11,6 +11,7 @@ services:
       - redis
     volumes:
       - kidsresas_development_node_modules:/app/node_modules
+      - kidsresas_development_rails_sprockets_cache:/rails_sprockets_cache
       - .:/app
     tty: true
     ports:
@@ -35,3 +36,4 @@ services:
 volumes:
     kidsresas_development_mysql_data:
     kidsresas_development_node_modules:
+    kidsresas_development_rails_sprockets_cache:
