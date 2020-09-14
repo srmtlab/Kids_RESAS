@@ -3,30 +3,20 @@
         <h2 class="border-bottom pb-2 mb-4">教室をえらぶ</h2>
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+        <% @rooms.each do |room| %>
             <div class="col">
                 <div class="card">
-                    <h5 class="card-header">(sample)教室001</h5>
+                    <h5 class="card-header"><%= room.title %></h5>
                     <div class="card-body">
-                        <h5 class="card-title">〇〇先生</h5>
-                        <h5 class="card-title">タイトル</h5>
-                        <p class="card-text">説明</p>
+                        <h5 class="card-title"><%= room.user.email %></h5>
+                        <h5 class="card-title"><%= room.title %></h5>
+                        <p class="card-text"><%= room.detail %></p>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enterRoomModal"
                             data-whatever="001">この教室に入る</button>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card">
-                    <h5 class="card-header">(sample)教室002</h5>
-                    <div class="card-body">
-                        <h5 class="card-title">△△先生</h5>
-                        <h5 class="card-title">タイトルはここに表示されます</h5>
-                        <p class="card-text">説明文はここに表示されます</p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enterRoomModal"
-                            data-whatever="002">この教室に入る</button>
-                    </div>
-                </div>
-            </div>
+        <% end %>    
         </div>
     </div>
 
