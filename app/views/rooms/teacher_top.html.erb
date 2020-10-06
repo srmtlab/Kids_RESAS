@@ -1,0 +1,47 @@
+    <div class="container">
+               
+        <h2 class="border-bottom pb-2 mb-4">教師用ページ</h2>
+        
+
+        <div class="row align-items-center mt-5 mb-5">
+            <div class="col-md-4">
+                <h1 class="border-bottom pb-2">準備</h1>
+            </div>
+            <div class="col-md-8 bg-light pt-5 pb-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <%# <a href="./edit_graph.html" type="button" class="btn btn-primary btn-block pt-3 pb-3 mt-3 mb-3" role="button">
+                            グラフ作成
+                        </a> %>
+                        <%= link_to "グラフ作成", edit_graph_path, class: "btn btn-primary btn-block pt-3 pb-3 mt-3 mb-3"%>
+                    </div>
+                    <div class="col-md-6">
+                        <%= link_to "クイズ作成", '#', class: "btn btn-primary btn-block pt-3 pb-3 mt-3 mb-3"%>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <%= link_to "シナリオ作成", '#', class: "btn btn-primary btn-block pt-3 pb-3 mt-3 mb-3"%>
+                    </div>
+                    <div class="col-md-6">
+                        <%= link_to "教室作成", edit_room_path, class: "btn btn-primary btn-block pt-3 pb-3 mt-3 mb-3"%>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center mt-5 mb-5">
+            <div class="col-md-4">
+                <h1 class="border-bottom pb-2">配信</h1>
+            </div>
+            <div class="col-md-8 bg-light pt-5 pb-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <%= link_to "教室確認", '#', class: "btn btn-primary btn-block pt-3 pb-3 mt-3 mb-3"%>
+                    </div>
+                    <div class="col-md-6">
+                        <%= link_to "生徒確認", '#', class: "btn btn-primary btn-block pt-3 pb-3 mt-3 mb-3"%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,69 @@
+    <style>
+        .square-frame {
+            border: 1px dotted #999;
+        }
+
+        .square-content {
+            display: block;
+            height: 0;
+            width: 100%;
+            padding-bottom: 75%;
+        }
+    </style>
+
+    <div class="container">
+                
+        <h2 class="border-bottom pb-2 mb-4">グラフ作成</h2>
+        
+        <div class="row">
+            <div class="col-md-5">
+                <form>
+                    <div class="form-group container mt-4">
+                        <div class="row mb-5">
+                            <select class="form-control col-md-4 ml-1" name="graphCategoryFormControlSelect" id="graphCategoryFormControlSelect">
+                                <option value="">カテゴリ</option>
+                                <option>人口</option>
+                                <option>産業</option>
+                                <option>産業-国際</option>
+                                <option>製造業</option>
+                                <option>商業</option>
+                            </select>
+                            <select class="form-control col-md-6 ml-1" name="graphContentsFormControlSelect" id="graphContentsFormControlSelect">
+                                <option value="">選択してください</option>
+                            </select>
+                        </div>
+                        <div class="row mb-5">
+                            <select class="form-control col-md-4 ml-1" name="graphPrefFormControlSelect" id="graphPrefFormControlSelect">
+                                <option value="">都道府県</option>
+                            </select>
+                            <select class="form-control col-md-6 ml-1" name="graphCityFormControlSelect" id="graphCityFormControlSelect">
+                                <option value=""> - </option>
+                            </select>
+                        </div>
+                        <div class="row mb-5">
+                            <select class="form-control col-md-5 ml-1" disabled name="graphFormFormControlSelect" id="graphFormFormControlSelect">
+                                <option>折れ線グラフ</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary ml-3">更新</button>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="row mb-4 text-center-aline">
+                            <button type="submit" class="btn btn-primary col-md-7">保存</button>
+                        </div>
+                        <div class="row mb-4 text-center-aline">
+                            <button type="submit" class="btn btn-primary col-md-7">印刷</button>
+                        </div>
+                        <div class="row mb-4 text-center-aline">
+                            <button type="submit" class="btn btn-primary col-md-7">このグラフを配信</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-7 text-center-aline">
+                <div class="square-frame">
+                    <span class="square-content"></span>
+                </div>
+            </div>
+        </div>
+    </div>

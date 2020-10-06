@@ -12,4 +12,19 @@ class RoomsController < ApplicationController
         end
     end
 
+    def room
+    end
+
+    def login
+    end
+
+    def teacher_top
+    end
+
+    def edit_room
+    end
+
+    def edit_graph
+    end
+
 end
