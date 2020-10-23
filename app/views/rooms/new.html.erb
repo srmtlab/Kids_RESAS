@@ -2,7 +2,7 @@
         <h2 class="border-bottom pb-2 mb-4">教室作成</h2>
     </div>
 
-    <%= form_with model:@room do |f| %>
+    <%= form_with(model:@room, local: true ) do |f| %>
         <div class="form-group container">
             <%= f.label :title, '授業タイトル', class: "classTitleTextarea" %>
             <%= f.text_field :title, class: "form-control mb-4", placeholder: "授業タイトル", required: true%>

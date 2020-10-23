@@ -12,7 +12,11 @@ class RoomsController < ApplicationController
     end
 
     def create
-        Room.create(room_params)
+        @room = Room.new(room_params)
+        @room.user = current_user
+        @room.save
+
+        redirect_to rooms_path
     end
 
     def show
@@ -30,6 +34,6 @@ class RoomsController < ApplicationController
 
     private
     def room_params
-        params.require(:user).require(:graph).permit(:title, :detail)
+        params.require(:room).permit(:title, :detail)
     end
 end
