@@ -1,8 +1,9 @@
     <style>
         .item {
-          padding: 10px;
+          margin: 18px;
+          padding: 0px;
           width: 80px;
-          height: 80px;
+          height: auto;
           color: #FFFFFF;
         }
         .item:hover {
@@ -37,16 +38,24 @@
                     ぜんぶけす
                 </a>
                 
-                <div class="row align-items-center">
-                    <div class="bg-primary item rounded-circle m-4"></div>
-                    <div class="bg-primary item rounded m-4"></div>
-                    <div class="bg-danger item rounded-circle m-4"></div>
-                    <div class="bg-danger item rounded m-4"></div>
-                    <div class="bg-warning item rounded-circle m-4"></div>
-                    <div class="bg-warning item rounded m-4"></div>
-                    <div class="bg-success item rounded-circle m-4"></div>
-                    <div class="bg-success item rounded m-4"></div>
+                <div class="row align-items-center" id="items">
+                    <%= image_tag "light_bl.png", alt: "Light Blue", id: "light_bl", class: "item" %>
+                    <%= image_tag "ques_bl.png", alt: "Question Blue", id: "question_bl", class: "item" %>
+                    <%= image_tag "light_re.png", alt: "Light Red", id: "light_re", class: "item" %>
+                    <%= image_tag "ques_re.png", alt: "Question Red", id: "question_re", class: "item" %>
+                    <%= image_tag "light_gr.png", alt: "Light Green", id: "light_gr", class: "item" %>
+                    <%= image_tag "ques_gr.png", alt: "Question Green", id: "question_gr", class: "item" %>
+                    <%= image_tag "light_ye.png", alt: "Light Yellow", id: "light_ye", class: "item" %>
+                    <%= image_tag "ques_ye.png", alt: "Question Yellow", id: "question_ye", class: "item" %>
                 </div>
+                <script type="text/javascript">
+
+                    function init() {
+                      // 移動適用
+                      $(".item").draggable({});
+                    }
+                    window.onload = init();
+                </script>
             </div>
         </div>
     </div>
