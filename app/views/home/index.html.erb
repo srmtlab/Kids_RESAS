@@ -1,0 +1,26 @@
+    <div class="container">
+                
+        <h2 class="border-bottom pb-2 mb-4">トップページ</h2>      
+
+        <div class="row align-items-center mt-5 mb-5">
+            <div class="col-md-8">
+                <h1 class="border-bottom pb-2">学習を始める</h1>
+            </div>
+            <div class="col-md-4 bg-light pt-5 pb-5">
+                <%# <a href="./select_room.html" type="button" class="btn btn-danger btn-block pt-3 pb-3 mb-5" role="button">
+                    教室をえらぶ
+                </a> %>
+                <%= link_to "教室をえらぶ", rooms_path, class: "btn btn-danger btn-block pt-3 pb-3 mb-5"%>
+                <%= link_to "グラフをつくる", '#', class: "btn btn-outline-warning btn-block disabled pt-3 pb-3 mt-5"%>
+            </div>
+        </div>
+        <div class="row align-items-center mt-5 mb-5">
+            <div class="col-md-8">
+                <h1 class="border-bottom pb-2">教師用ページへ</h1>
+            </div>
+            <div class="col-md-4 bg-light pt-5 pb-5">
+                <h6 class="mb-2">教師の方はこちらから</h6>
+                <%= link_to "ログインページへ", '#', class: "btn btn-primary btn-block pt-3 pb-3"%>
+            </div>
+        </div>
+    </div>

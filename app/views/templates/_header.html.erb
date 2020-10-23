@@ -13,8 +13,8 @@
                         <%# <a class="nav-link" href="./index.html">トップページ <span class="sr-only">(current)</span></a> %>
                         <%= link_to "トップページ", root_path, class: "nav-link"%>
                     </li>
-                    <li class="nav-item <%= 'active' if current_page?(select_room_path) %>">
-                        <%= link_to "教室をえらぶ", select_room_path, class: "nav-link"%>
+                    <li class="nav-item <%= 'active' if current_page?(rooms_path) %>">
+                        <%= link_to "教室をえらぶ", rooms_path, class: "nav-link"%>
                     </li>
                     <li class="nav-item <%= 'active' if current_page?('#') %>">
                         <%# <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">グラフをつくる</a> %>
@@ -35,7 +35,7 @@
                             <%= link_to "グラフ作成", '#', class: "dropdown-item" %>
                             <%= link_to "クイズ作成", '#', class: "dropdown-item" %>
                             <%= link_to "シナリオ作成", '#', class: "dropdown-item" %>
-                            <%= link_to "教室作成", '#', class: "dropdown-item" %>
+                            <%= link_to "教室作成", new_room_path, class: "dropdown-item" %>
                             <div class="dropdown-divider"></div>
                             <%= link_to "教室確認", '#', class: "dropdown-item" %>
                             <%= link_to "生徒確認", '#', class: "dropdown-item" %>

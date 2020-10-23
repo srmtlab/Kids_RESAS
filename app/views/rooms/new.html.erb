@@ -2,12 +2,22 @@
         <h2 class="border-bottom pb-2 mb-4">教室作成</h2>
     </div>
 
-    <form>
+    <%= form_with(model:@room, local: true ) do |f| %>
+        <div class="form-group container">
+            <%= f.label :title, '授業タイトル', class: "classTitleTextarea" %>
+            <%= f.text_field :title, class: "form-control mb-4", placeholder: "授業タイトル", required: true%>
+            <%= f.label :detail, '授業内容', class: "classContentsTextarea" %>
+            <%= f.text_area :detail, class: "form-control mb-4", rows: "3", placeholder: "授業内容", required: true%>
+            <%= f.submit "教室作成", class: "btn btn-primary mt-3 mb-2" %>
+        </div>
+    <% end %>
+
+    <%# <form>
         <div class="form-group container">
             <label for="classTitleTextarea">授業タイトル</label>
             <textarea class="form-control col-md-8 mb-4 rows=1" id="classTitleTextarea" rows="3"></textarea>
             <label for="classContentsTextarea">授業内容</label>
-            <textarea class="form-control col-md-8 mb-4 rows=3" id="classContentsTextarea" rows="3"></textarea>
+            <textarea class="form-control col-md-8 mb-4 rows=3" id="classContentsTextarea" rows="3" ></textarea>
             <label for="scenarioFormControlSelect1">シナリオの選択</label>
             <select class="form-control col-md-3 mb-4" id="scenarioFormControlSelect1">
                 <option>1</option>
@@ -18,4 +28,4 @@
             </select>
             <button type="submit" class="btn btn-primary mt-3 mb-2">教室作成</button>
         </div>
-    </form>
+    </form> %>
