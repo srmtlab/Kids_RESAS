@@ -1,21 +1,22 @@
 class RoomsController < ApplicationController
 
     def index
-    end
-    
-    def select_room
         @rooms = []
         Room.all.order(created_at: :desc).each do |room|
-          
             @rooms.push(room)
-
         end
     end
-
-    def room
+    
+    def new
+        @room = Room.new
     end
 
-    def login
+    def create
+        Room.create(room_params)
+    end
+
+    def show
+
     end
 
     def teacher_top
@@ -27,4 +28,8 @@ class RoomsController < ApplicationController
     def edit_graph
     end
 
+    private
+    def room_params
+        params.require(:user).require(:graph).permit(:title, :detail)
+    end
 end
