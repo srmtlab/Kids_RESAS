@@ -1,0 +1,51 @@
+    <div class="container">
+        <%# <% provide(:title, "") %>
+        <h2 class="border-bottom pb-2 mb-4">保存グラフ一覧</h2>
+
+        <%# -- テスト用 -- %>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+        <% @graphs.each do |graph| %>
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header"><%= graph.graph_kind %></h5>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= graph.user.email %></h5>
+                        <h5 class="card-title"><%= graph.dataset.name %></h5>
+                        <p class="card-text"><%= graph.graph_param.pref_code %></p>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#toRoomModal"
+                            data-whatever="001">配信</button>
+                    </div>
+                </div>
+            </div>
+        <% end %>    
+        </div>
+    </div>
+
+    <div class="modal fade" id="toRoomModal" tabindex="-1" role="dialog" aria-labelledby="toRoomModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="enterRoomModalLabel">配信する教室を選ぶ</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <form>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="room-number" class="control-label">教室名</label>
+                            <select class="form-control col-md-6 ml-1" name="roomFormControlSelect" id="roomFormControlSelect">
+                                <option value="">選択してください</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">とじる</button>
+                        <button type="submit" class="btn btn-primary">OK</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

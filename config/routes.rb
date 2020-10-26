@@ -6,9 +6,10 @@ Rails.application.routes.draw do
   root 'home#index'
   resources :rooms, :only => [:index, :new, :create, :show]
 
+  resources :graphs, :only => [:index, :new, :create, :show]
+
   get '/login', to: 'rooms#login'
   get '/teacher_top', to: 'rooms#teacher_top'
-  get '/edit_graph', to: 'rooms#edit_graph'
-
+  
   get '/test/:id', to: 'home#test'
 end
