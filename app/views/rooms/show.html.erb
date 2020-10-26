@@ -1,27 +1,26 @@
-    <style>
-        .item {
-          margin: 18px;
-          padding: 0px;
-          width: 80px;
-          height: auto;
-          color: #FFFFFF;
-        }
-        .item:hover {
-          cursor: pointer;
-        }
-        
-        .square-frame {
-            border: 1px dotted #999;
-        }
-
-        .square-content {
-            display: block;
-            height: 0;
-            width: 100%;
-            padding-bottom: 80%;
-        }
+<style>
+    .item {
+      margin: 18px;
+      padding: 0px;
+      width: 80px;
+      height: auto;
+      color: #FFFFFF;
+    }
+    .item:hover {
+      cursor: pointer;
+    }
     
-    </style>
+    .square-frame {
+        border: 1px dotted #999;
+    }
+    .square-content {
+        display: block;
+        height: 0;
+        width: 100%;
+        padding-bottom: 80%;
+    }
+
+</style>
 
     <div class="container">
                 
@@ -29,7 +28,7 @@
         
         <div class="row">
             <div class="col-md-9">
-                <div class="square-frame">
+                <div id="square-frame" class="square-frame">
                     <span class="square-content"></span>
                 </div>
             </div>
@@ -48,14 +47,12 @@
                     <%= image_tag "light_ye.png", alt: "Light Yellow", id: "light_ye", class: "item" %>
                     <%= image_tag "ques_ye.png", alt: "Question Yellow", id: "question_ye", class: "item" %>
                 </div>
-                <script type="text/javascript">
-
-                    function init() {
-                      // 移動適用
-                      $(".item").draggable({});
-                    }
-                    window.onload = init();
-                </script>
             </div>
         </div>
     </div>
+
+<script type="text/javascript">
+    room_id = <%= @room.id %>;
+    // 移動適用
+    $(".item").draggable({});
+</script>
