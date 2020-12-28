@@ -24,11 +24,11 @@
                 <ul class="navbar-nav">
                     <% if user_signed_in? %>
                     <li class="nav-item dropdown">
-                        <%= link_to "教師用メニュー", '#', class: "nav-link dropdown-toggle", id: "navbarDropdownMenuLink" , 
+                        <%= link_to "教師用メニュー", teacher_index_path, class: "nav-link dropdown-toggle", id: "navbarDropdownMenuLink" , 
                             role: "button" , 'data-toggle': "dropdown", 'aria-haspopup': "true", 'aria-expanded': "false" 
                         %>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <%= link_to "グラフ作成", '#', class: "dropdown-item" %>
+                            <%= link_to "グラフ作成", new_graph_path, class: "dropdown-item" %>
                             <%= link_to "クイズ作成", '#', class: "dropdown-item" %>
                             <%= link_to "シナリオ作成", '#', class: "dropdown-item" %>
                             <%= link_to "教室作成", new_room_path, class: "dropdown-item" %>

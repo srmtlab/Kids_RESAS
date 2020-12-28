@@ -12,7 +12,7 @@
                         <h5 class="card-title"><%= room.title %></h5>
                         <p class="card-text"><%= room.detail %></p>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enterRoomModal"
-                            data-whatever="001">この教室に入る</button>
+                            onclick="room_select()">この教室に入る</button>
                     </div>
                 </div>
             </div>
@@ -35,12 +35,12 @@
 
                         <div class="form-group">
                             <label for="room-number" class="control-label">教室番号</label>
-                            <input type="text" class="form-control" id="room-number" placeholder="教室番号が表示される予定？"
+                            <input type="text" class="form-control" id="room-number" placeholder="教室番号"
                                 readonly>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="tokuemi-check">
-                            <label class="form-check-label" for="tokuemi-check">匿名入室（名前を入力しないで入る）</label>
+                            <input type="checkbox" class="form-check-input" id="tokumei-check">
+                            <label class="form-check-label" for="tokumei-check">匿名入室（名前を入力しないで入る）</label>
                         </div>
                         <div class="form-group">
                             <label for="student-name" class="control-label">あなたのなまえ</label>
@@ -58,3 +58,8 @@
     </div>
 
     <!-- javascriptでどうにかこうにかする気がする -->
+    <script>
+        function room_select() {
+            alert("test");
+        }
+    </script>
