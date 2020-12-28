@@ -27,5 +27,11 @@ window.addEventListener('load', function () {
         roomChannel.send({ offsetX: event.offsetX, offsetY: event.offsetY })
     })
 
+    let items = document.getElementById("light_bl")
+
+    items.addEventListener('dragend', function (event) {
+        roomChannel.send({ offsetX: event.offsetX, offsetY: event.offsetY })
+    })
+
     // 
 })

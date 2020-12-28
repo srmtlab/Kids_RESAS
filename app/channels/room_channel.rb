@@ -9,6 +9,8 @@ class RoomChannel < ApplicationCable::Channel
   
 
     def receive(data)
+        # TODO: 保存処理書くかも
+        # サーバーでデータを受信した時
         ActionCable.server.broadcast("room_channel_#{params['room_id']}", data)
     end
 end

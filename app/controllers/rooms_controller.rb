@@ -24,7 +24,7 @@ class RoomsController < ApplicationController
         # @room = Room.find(params[:id]).reload
         
         # TODO: 以下はテストのためのコード
-        @room = Room.find(1).reload
+        @room = Room.find(2).reload
     end
 
     def teacher_top
