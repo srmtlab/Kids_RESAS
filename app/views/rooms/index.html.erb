@@ -8,11 +8,11 @@
                 <div class="card">
                     <h5 class="card-header"><%= room.title %></h5>
                     <div class="card-body">
-                        <h5 class="card-title"><%= room.user.email %></h5>
                         <h5 class="card-title"><%= room.title %></h5>
                         <p class="card-text"><%= room.detail %></p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enterRoomModal"
-                            onclick="room_select()">この教室に入る</button>
+                        <%# TODO: data属性を用いて部屋の番号を記載してます！！ %>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enterRoomModal" data-room-id="<%= room.id %>"
+                            onclick="room_select(event)">この教室に入る</button>
                     </div>
                 </div>
             </div>
@@ -30,13 +30,12 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
-                <form>
+                <form id="testtest" onsubmit="enter_room(event)">
                     <div class="modal-body">
 
                         <div class="form-group">
                             <label for="room-number" class="control-label">教室番号</label>
-                            <input type="text" class="form-control" id="room-number" placeholder="教室番号"
-                                readonly>
+                            <input type="text" class="form-control" id="room-number" placeholder="教室番号" value="" readonly>
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="tokumei-check">
@@ -50,16 +49,22 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">とじる</button>
                         <button type="submit" class="btn btn-primary">OK</button>
-                        <%# TODO: OKボタンを押した後にどのURLにジャンプするのかは、javascriptによる実装が必要 %>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    
 
     <!-- javascriptでどうにかこうにかする気がする -->
     <script>
-        function room_select() {
-            alert("test");
+        function room_select(event) {
+            const room_id = event.target.dataset.roomId;
+            document.getElementById("room-number").value = room_id;
+        }
+
+        function enter_room(event){
+            const room_id = document.getElementById("room-number").value;
+            event.target.action = "<%= rooms_path %>" + "/" + room_id;
         }
     </script>

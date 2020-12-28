@@ -24,10 +24,7 @@ class RoomsController < ApplicationController
 
     def show
         # TODO: 本来は以下のコードを実行する
-        # @room = Room.find(params[:id]).reload
-        
-        # TODO: 以下はテストのためのコード
-        @room = Room.find(2).reload
+        @room = Room.find(params[:id]).reload
     end
 
 
