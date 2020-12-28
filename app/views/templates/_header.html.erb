@@ -22,16 +22,12 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
+                    <% if user_signed_in? %>
                     <li class="nav-item dropdown">
-                        <%# <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            教師用メニュー
-                        </a> %>
                         <%= link_to "教師用メニュー", '#', class: "nav-link dropdown-toggle", id: "navbarDropdownMenuLink" , 
                             role: "button" , 'data-toggle': "dropdown", 'aria-haspopup': "true", 'aria-expanded': "false" 
                         %>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <%# <a class="dropdown-item" href="./edit_graph.html">グラフ作成</a> %>
                             <%= link_to "グラフ作成", '#', class: "dropdown-item" %>
                             <%= link_to "クイズ作成", '#', class: "dropdown-item" %>
                             <%= link_to "シナリオ作成", '#', class: "dropdown-item" %>
@@ -41,9 +37,15 @@
                             <%= link_to "生徒確認", '#', class: "dropdown-item" %>
                         </div>
                     </li>
-                    <li class="nav-item <%= 'active' if current_page?('#') %>">
-                        <%= link_to "ログイン", '#', class: "nav-link" %>
+                    <li class="nav-item">
+                        <%# See: https://github.com/heartcombo/devise/wiki/How-To:-Add-sign_in,-sign_out,-and-sign_up-links-to-your-layout-template %>
+                        <%= link_to "ログアウト", destroy_user_session_path, class: "nav-link", method: :delete %>
                     </li>
+                    <% else %>
+                    <li class="nav-item <%= 'active' if current_page?(new_user_session_path) %>">
+                        <%= link_to "ログイン", new_user_session_path, class: "nav-link" %>
+                    </li>
+                    <% end %>
                 </ul>
             </div>
         </div>

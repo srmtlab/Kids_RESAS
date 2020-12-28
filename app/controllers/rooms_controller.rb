@@ -1,4 +1,7 @@
 class RoomsController < ApplicationController
+    # new, createに関しては、ログインしていないユーザーのアクセスを許可しない
+    # See: https://qiita.com/tobita0000/items/866de191635e6d74e392
+    before_action :authenticate_user!, only: [:new, :create]
 
     def index
         @rooms = []
@@ -27,8 +30,6 @@ class RoomsController < ApplicationController
         @room = Room.find(2).reload
     end
 
-    def teacher_top
-    end
 
     def edit_room
     end
