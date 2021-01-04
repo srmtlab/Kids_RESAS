@@ -9,10 +9,11 @@
             </div>
         </div>
         <div class="col-md-3 bg-light pt-5 pb-5">
-            <a href="#" type="button" class="btn btn-primary btn-block pt-3 pb-3 mb-3" role="button" 　
-                draggable="false">
+            <% if current_user == @room.user then %>
+            <a href="#" type="button" class="btn btn-primary btn-block pt-3 pb-3 mb-3" role="button" draggable="false" onclick="deleteItem()">
                 ぜんぶけす
             </a>
+            <% end %>
             <div class="row align-items-center" id="items">
                 <%= image_tag "light_bl.png", alt: "Light Blue", id: "light_bl", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
                 <%= image_tag "ques_bl.png", alt: "Question Blue", id: "question_bl", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
@@ -55,7 +56,15 @@
     // 電球や?の状態を保存する変数
     // 既にドラッグをしてしまったのか？
     // ドラッグ＆ドロップをしたのであればどの状態にドロップしたのか？
-    let myItemStatus = {}
+    let ItemStatus = []
+
+    // 画像の倍率
+    let img_ratio = 0.3;
+    let img_path = {};
+    
+    // 現在ドラッグ&ドロップされている状態を表す
+    let currentstatus = null;
+    let currentstatusIsDraw = false;
 
     window.onload = function () {
         canvas = document.getElementById("graph");
@@ -66,43 +75,38 @@
         // context.globalAlpha = 0.5;
 
         for (let itemName of ["light_bl", "light_re", "light_gr", "light_ye", "question_bl", "question_re", "question_gr", "question_ye"]) {
-            myItemStatus[itemName] = {
-                "isDraw": false,
-                "img_path": document.getElementById(itemName).src,
-                "width": document.getElementById(itemName).clientWidth, // 画像の幅
-                "height": document.getElementById(itemName).clientHeight,  // 画像の高さ
-                "x_coordinate": null,
-                "y_coordinate": null,
-            }
+            img_path[itemName] = document.getElementById(itemName).src;
         }
     }
-
-    // 画像の倍率
-    let img_ratio = 0.3;
-    // 現在ドラッグ&ドロップされている状態を表す
-    let currentstatus = null;
-
 
     function f_dragstart(event) {
         currentstatus = document.getElementById(event.target.id);
     }
 
     function f_dragenter(event) {
-        myItemStatus[currentstatus.id]["isDraw"] = true;
+        currentstatusIsDraw = true;
     }
 
     function f_dragleave(event) {
-        myItemStatus[currentstatus.id]["isDraw"] = false;
+        currentstatusIsDraw = false;
         drawItem(event);
     }
 
     function f_drop(event) {
         event.preventDefault();
-        myItemStatus[currentstatus.id]["isDraw"] = true;
         currentstatus.style.border = "solid black";
+        currentstatusIsDraw = false;
+
+        // サーバーにデータを送信する
         roomChannel.send({
-            "item": currentstatus.id,
-            "data": myItemStatus[currentstatus.id]
+            "operation": "add",
+            "data": {
+                "itemName": currentstatus.id,
+                "x_coordinate": event.offsetX - currentstatus.clientWidth * img_ratio / 2,
+                "y_coordinate": event.offsetY - currentstatus.clientHeight * img_ratio / 2,
+                "width": currentstatus.clientWidth,
+                "height": currentstatus.clientHeight
+            }
         })
 
         currentstatus.draggable = false;        
@@ -110,37 +114,33 @@
 
     function drawItem(event) {
         context.clearRect(0, 0, canvas.width, canvas.height);
-        for (let itemName in myItemStatus) {
-            if (currentstatus !== null && itemName === currentstatus.id && myItemStatus[itemName]["isDraw"]) {
-                // 現在ドラッグ&ドロップしてる要素ならば
-                let img = new Image();
-                img.src = myItemStatus[itemName]["img_path"];
-                img.onload = function () {
-                    context.drawImage(
-                        img,
-                        event.offsetX - currentstatus.clientWidth * img_ratio / 2,
-                        event.offsetY - currentstatus.clientHeight * img_ratio / 2,
-                        myItemStatus[itemName]["width"] * img_ratio,
-                        myItemStatus[itemName]["height"] * img_ratio
-                    );
 
-                    // 現在の状態を保存
-                    myItemStatus[itemName]["x_coordinate"] = event.offsetX - currentstatus.clientWidth * img_ratio / 2;
-                    myItemStatus[itemName]["y_coordinate"] = event.offsetY - currentstatus.clientHeight * img_ratio / 2;
-                }
+        if (currentstatus !== null && currentstatusIsDraw){
+            // 現在ドラッグ&ドロップしてる要素ならば
+            let img = new Image();
+            img.src = currentstatus.src;
+            img.onload = function () {
+                context.drawImage(
+                    img,
+                    event.offsetX - currentstatus.clientWidth * img_ratio / 2,
+                    event.offsetY - currentstatus.clientHeight * img_ratio / 2,
+                    currentstatus.clientWidth * img_ratio,
+                    currentstatus.clientHeight * img_ratio
+                );
             }
-            else if (myItemStatus[itemName]["isDraw"]) {
-                let img = new Image();
-                img.src = myItemStatus[itemName]["img_path"];
-                img.onload = function () {
-                    context.drawImage(
-                        img,
-                        myItemStatus[itemName]["x_coordinate"],
-                        myItemStatus[itemName]["y_coordinate"],
-                        myItemStatus[itemName]["width"] * img_ratio,
-                        myItemStatus[itemName]["height"] * img_ratio
-                    );
-                }
+        }
+
+        for (let item of ItemStatus){
+            let img = new Image();
+            img.src = img_path[item["itemName"]];
+            img.onload = function () {
+                context.drawImage(
+                    img,
+                    item["x_coordinate"],
+                    item["y_coordinate"],
+                    item["width"] * img_ratio,
+                    item["height"] * img_ratio
+                );
             }
         }
     }
@@ -153,4 +153,12 @@
     function f_dragend(event) {
         currentstatus = null;
     }
+
+    <% if current_user == @room.user then %>
+    function deleteItem(){
+        roomChannel.send({
+            "operation": "deleteAll"
+        })
+    }
+    <% end %>    
 </script>
