@@ -1,58 +1,156 @@
+<div class="container">
+    <h2 class="border-bottom pb-2 mb-4">教室 101</h2>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="square-frame">
+                <canvas id="graph" ondragover="f_dragover(event)" ondrop="f_drop(event)"
+                    ondragenter="f_dragenter(event)" ondragleave="f_dragleave(event)">
+                </canvas>
+            </div>
+        </div>
+        <div class="col-md-3 bg-light pt-5 pb-5">
+            <a href="#" type="button" class="btn btn-primary btn-block pt-3 pb-3 mb-3" role="button" 　
+                draggable="false">
+                ぜんぶけす
+            </a>
+            <div class="row align-items-center" id="items">
+                <%= image_tag "light_bl.png", alt: "Light Blue", id: "light_bl", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
+                <%= image_tag "ques_bl.png", alt: "Question Blue", id: "question_bl", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
+                <%= image_tag "light_re.png", alt: "Light Red", id: "light_re", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
+                <%= image_tag "ques_re.png", alt: "Question Red", id: "question_re", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
+                <%= image_tag "light_gr.png", alt: "Light Green", id: "light_gr", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
+                <%= image_tag "ques_gr.png", alt: "Question Green", id: "question_gr", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
+                <%= image_tag "light_ye.png", alt: "Light Yellow", id: "light_ye", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
+                <%= image_tag "ques_ye.png", alt: "Question Yellow", id: "question_ye", class: "item", draggable: "true", ondragstart: "f_dragstart(event)", ondragend: "f_dragend(event)" %>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .item {
-      margin: 18px;
-      padding: 0px;
-      width: 80px;
-      height: auto;
-      color: #FFFFFF;
+        margin: 18px;
+        padding: 0px;
+        width: 80px;
+        height: auto;
+        color: #FFFFFF;
     }
+
     .item:hover {
-      cursor: pointer;
+        cursor: pointer;
     }
-    
+
     .square-frame {
         border: 1px dotted #999;
-    }
-    .square-content {
-        display: block;
         height: 0;
         width: 100%;
         padding-bottom: 80%;
     }
-
 </style>
 
-    <div class="container">
-                
-        <h2 class="border-bottom pb-2 mb-4"><%= @room.title %></h2>
-        
-        <div class="row">
-            <div class="col-md-9">
-                <div id="square-frame" class="square-frame">
-                    <span class="square-content"></span>
-                </div>
-            </div>
-            <div class="col-md-3 bg-light pt-5 pb-5">
-                <a href="#" type="button" class="btn btn-primary btn-block pt-3 pb-3 mb-5" role="button">
-                    ぜんぶけす
-                </a>
-                
-                <div class="row align-items-center" id="items">
-                    <%= image_tag "light_bl.png", alt: "Light Blue", id: "light_bl", class: "item" %>
-                    <%= image_tag "ques_bl.png", alt: "Question Blue", id: "question_bl", class: "item" %>
-                    <%= image_tag "light_re.png", alt: "Light Red", id: "light_re", class: "item" %>
-                    <%= image_tag "ques_re.png", alt: "Question Red", id: "question_re", class: "item" %>
-                    <%= image_tag "light_gr.png", alt: "Light Green", id: "light_gr", class: "item" %>
-                    <%= image_tag "ques_gr.png", alt: "Question Green", id: "question_gr", class: "item" %>
-                    <%= image_tag "light_ye.png", alt: "Light Yellow", id: "light_ye", class: "item" %>
-                    <%= image_tag "ques_ye.png", alt: "Question Yellow", id: "question_ye", class: "item" %>
-                </div>
-            </div>
-        </div>
-    </div>
+<script>
+    let roomChannel;
+    let canvas, context, room_id = <%= @room.id %>;
 
-<script type="text/javascript">
-    room_id = <%= @room.id %>;
-    // 移動適用
-    $(".item").draggable({});
+    // 電球や?の状態を保存する変数
+    // 既にドラッグをしてしまったのか？
+    // ドラッグ＆ドロップをしたのであればどの状態にドロップしたのか？
+    let myItemStatus = {}
+
+    window.onload = function () {
+        canvas = document.getElementById("graph");
+        canvas.width = canvas.parentNode.clientWidth;
+        canvas.height = canvas.parentNode.clientHeight;
+
+        context = canvas.getContext('2d');
+        // context.globalAlpha = 0.5;
+
+        for (let itemName of ["light_bl", "light_re", "light_gr", "light_ye", "question_bl", "question_re", "question_gr", "question_ye"]) {
+            myItemStatus[itemName] = {
+                "isDraw": false,
+                "img_path": document.getElementById(itemName).src,
+                "width": document.getElementById(itemName).clientWidth, // 画像の幅
+                "height": document.getElementById(itemName).clientHeight,  // 画像の高さ
+                "x_coordinate": null,
+                "y_coordinate": null,
+            }
+        }
+    }
+
+    // 画像の倍率
+    let img_ratio = 0.3;
+    // 現在ドラッグ&ドロップされている状態を表す
+    let currentstatus = null;
+
+
+    function f_dragstart(event) {
+        currentstatus = document.getElementById(event.target.id);
+    }
+
+    function f_dragenter(event) {
+        myItemStatus[currentstatus.id]["isDraw"] = true;
+    }
+
+    function f_dragleave(event) {
+        myItemStatus[currentstatus.id]["isDraw"] = false;
+        drawItem(event);
+    }
+
+    function f_drop(event) {
+        event.preventDefault();
+        myItemStatus[currentstatus.id]["isDraw"] = true;
+        currentstatus.style.border = "solid black";
+        roomChannel.send({
+            "item": currentstatus.id,
+            "data": myItemStatus[currentstatus.id]
+        })
+
+        currentstatus.draggable = false;        
+    }
+
+    function drawItem(event) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        for (let itemName in myItemStatus) {
+            if (currentstatus !== null && itemName === currentstatus.id && myItemStatus[itemName]["isDraw"]) {
+                // 現在ドラッグ&ドロップしてる要素ならば
+                let img = new Image();
+                img.src = myItemStatus[itemName]["img_path"];
+                img.onload = function () {
+                    context.drawImage(
+                        img,
+                        event.offsetX - currentstatus.clientWidth * img_ratio / 2,
+                        event.offsetY - currentstatus.clientHeight * img_ratio / 2,
+                        myItemStatus[itemName]["width"] * img_ratio,
+                        myItemStatus[itemName]["height"] * img_ratio
+                    );
+
+                    // 現在の状態を保存
+                    myItemStatus[itemName]["x_coordinate"] = event.offsetX - currentstatus.clientWidth * img_ratio / 2;
+                    myItemStatus[itemName]["y_coordinate"] = event.offsetY - currentstatus.clientHeight * img_ratio / 2;
+                }
+            }
+            else if (myItemStatus[itemName]["isDraw"]) {
+                let img = new Image();
+                img.src = myItemStatus[itemName]["img_path"];
+                img.onload = function () {
+                    context.drawImage(
+                        img,
+                        myItemStatus[itemName]["x_coordinate"],
+                        myItemStatus[itemName]["y_coordinate"],
+                        myItemStatus[itemName]["width"] * img_ratio,
+                        myItemStatus[itemName]["height"] * img_ratio
+                    );
+                }
+            }
+        }
+    }
+
+    function f_dragover(event) {
+        event.preventDefault();
+        drawItem(event);
+    }
+
+    function f_dragend(event) {
+        currentstatus = null;
+    }
 </script>
