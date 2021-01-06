@@ -113,8 +113,8 @@
             "operation": "add",
             "data": {
                 "itemName": currentstatus.id,
-                "x_coordinate": event.offsetX - currentstatus.clientWidth * img_ratio / 2,
-                "y_coordinate": event.offsetY - currentstatus.clientHeight * img_ratio / 2,
+                "x_coordinate": (event.offsetX - currentstatus.clientWidth * img_ratio / 2) / canvas.width,
+                "y_coordinate": (event.offsetY - currentstatus.clientHeight * img_ratio / 2) / canvas.height,
                 "width": currentstatus.clientWidth,
                 "height": currentstatus.clientHeight
             }
@@ -147,8 +147,8 @@
             img.onload = function () {
                 context.drawImage(
                     img,
-                    item["x_coordinate"],
-                    item["y_coordinate"],
+                    item["x_coordinate"] * canvas.width,
+                    item["y_coordinate"] * canvas.height,
                     item["width"] * img_ratio,
                     item["height"] * img_ratio
                 );

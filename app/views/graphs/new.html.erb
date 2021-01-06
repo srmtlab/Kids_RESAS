@@ -69,7 +69,6 @@
     let canvas, context, room_id = <%= @room.id %>;
 
     function edit_graph(event){
-        console.log("pass");
 
         roomChannel.send({
             "operation": "edit_graph",
