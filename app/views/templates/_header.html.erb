@@ -16,19 +16,14 @@
                     <li class="nav-item <%= 'active' if current_page?(rooms_path) %>">
                         <%= link_to "教室をえらぶ", rooms_path, class: "nav-link"%>
                     </li>
-                    <li class="nav-item <%= 'active' if current_page?('#') %>">
-                        <%# <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">グラフをつくる</a> %>
-                        <%= link_to "グラフをつくる", '#', class: "nav-link disabled", tabindex: '-1' , 'aria-disabled': "true" %>
-                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     <% if user_signed_in? %>
+                    <% if controller.controller_name == "rooms" and controller.action_name == "show" and current_user == @room.user then %>
                     <li class="nav-item dropdown">
-                        <%= link_to "教師用メニュー", teacher_index_path, class: "nav-link dropdown-toggle", id: "navbarDropdownMenuLink" , 
-                            role: "button" , 'data-toggle': "dropdown", 'aria-haspopup': "true", 'aria-expanded': "false" 
-                        %>
+                        <%= link_to "教師用メニュー", teacher_index_path, class: "nav-link  dropdown-toggle", id: "navbarDropdownMenuLink", role: "button" , 'data-toggle': "dropdown", 'aria-haspopup': "true", 'aria-expanded': "false" %>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <%= link_to "グラフ作成", new_graph_path, class: "dropdown-item" %>
+                            <%= link_to "グラフ作成", new_room_graph_path(@room.id), class: "dropdown-item" %>
                             <%= link_to "クイズ作成", '#', class: "dropdown-item" %>
                             <%= link_to "シナリオ作成", '#', class: "dropdown-item" %>
                             <%= link_to "教室作成", new_room_path, class: "dropdown-item" %>
@@ -37,6 +32,8 @@
                             <%= link_to "生徒確認", '#', class: "dropdown-item" %>
                         </div>
                     </li>
+                    <% end %>
+
                     <li class="nav-item">
                         <%# See: https://github.com/heartcombo/devise/wiki/How-To:-Add-sign_in,-sign_out,-and-sign_up-links-to-your-layout-template %>
                         <%= link_to "ログアウト", destroy_user_session_path, class: "nav-link", method: :delete %>

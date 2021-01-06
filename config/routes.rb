@@ -5,13 +5,11 @@ Rails.application.routes.draw do
   devise_for :users
   
   root 'home#index'
-  resources :rooms, :only => [:index, :new, :create, :show]
+  resources :rooms, :only => [:index, :new, :create, :show] do
+    resources :graphs, :only => [:index, :new, :create]
+  end
 
-  resources :graphs, :only => [:index, :new, :create, :show]
-  
   # TODO:　卒研後，要検討！！！
   resources :teacher, :only => [:index]
-  
-  get '/test/:id', to: 'home#test'
 
 end

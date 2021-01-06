@@ -6,3 +6,7 @@ RAILS_SPROCKETS_CACHE=/rails_sprockets_cache
 # REDIS
 # ------------------------------------------------------------------------------
 REDIS_CHANNEL_PREFIX=kidsresas_development
+
+# RESAS
+# ------------------------------------------------------------------------------
+# RESAS_API_KEY=

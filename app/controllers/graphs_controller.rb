@@ -8,6 +8,7 @@ class GraphsController < ApplicationController
     end
     
     def new
+        @room = Room.find(params[:room_id]).reload
         @graph = Graph.new
     end
 

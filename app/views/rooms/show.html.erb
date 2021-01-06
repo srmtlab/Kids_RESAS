@@ -3,6 +3,7 @@
     <div class="row">
         <div class="col-md-9">
             <div class="square-frame">
+                <canvas id="myLineChart"></canvas>
                 <canvas id="graph" ondragover="f_dragover(event)" ondrop="f_drop(event)"
                     ondragenter="f_dragenter(event)" ondragleave="f_dragleave(event)">
                 </canvas>
@@ -46,6 +47,16 @@
         height: 0;
         width: 100%;
         padding-bottom: 80%;
+        position: relative;
+    }
+
+    .square-frame canvas {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
     }
 </style>
 
@@ -160,5 +171,176 @@
             "operation": "deleteAll"
         })
     }
-    <% end %>    
+    <% end %>
+
+    function drawSumPerYear(obj){
+        //オブジェクトの整理
+        var values = [];
+        var eld_values = [];
+        var wok_values = [];
+        var chd_values =[];
+        var years = [];
+        for (let i in obj.result.bar.data) {
+            // FIXME: 以下はデータの年度が5で割り切れる前提で書いているので修正要
+            if (obj.result.bar.data[i].year%5 == 0) {
+                years.push(obj.result.bar.data[i].year);
+                values[i] = obj.result.bar.data[i].sum;
+                for (let j in obj.result.bar.data[i].class) {
+                if (obj.result.bar.data[i].class[j].label == "老年人口") {
+                    eld_values[i] = obj.result.bar.data[i].class[j].value;
+                } else if (obj.result.bar.data[i].class[j].label == "生産年齢人口") {
+                    wok_values[i] = obj.result.bar.data[i].class[j].value;
+                } else if (obj.result.bar.data[i].class[j].label == "年少人口") {
+                    chd_values[i] = obj.result.bar.data[i].class[j].value;
+                }
+            }
+        } else {
+            values[i] = null;
+            eld_values[i] = null;
+            wok_values[i] = null;
+            chd_values[i] = null;
+        }
+    }
+
+    var ctx = document.getElementById("myLineChart");
+    var myLineChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: years,
+            datasets: [
+                {
+                    type: 'line',
+                    label: '総人口',
+                    data: values,
+                    borderColor: "rgba(255,75,0,1)",
+                    backgroundColor: "rgba(0,0,0,0)",
+                    pointStyle: 'circle'
+                },
+                {
+                    type: 'bar',
+                    label: '年少人口',
+                    data: eld_values,
+                    borderColor: "rgba(0,90,255,1)",
+                    backgroundColor: "rgba(0,90,255,1)",
+                },
+                {
+                    type: 'bar',
+                    label: '生産年齢人口',
+                    data: eld_values,
+                    borderColor: "rgba(255,241,0,1)",
+                    backgroundColor: "rgba(255,241,0,1)",
+                },
+                {
+                    type: 'bar',
+                    label: '老年人口',
+                    data: chd_values,
+                    borderColor: "rgba(3,175,122,1)",
+                    backgroundColor: "rgba(3,175,122,1)",
+                }
+            ],
+        },
+        options: {
+            title: {
+                display: true,
+                text: '人口増減率'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                    // suggestedMax: 16000,
+                    // suggestedMin: 0,
+                    // stepSize: 2000,
+                    callback: function(value, index, values){
+                        return  value +  '％'
+                    }
+                    }
+                }]
+            },
+        }
+    });        
+
+    }
+
+    function drawPerYear(obj){
+    //オブジェクトの整理
+    var values = [];
+    var labels = [];
+    var years = [];
+    for (let i in obj.result.data) {
+        values[i] = [];
+        labels[i] = obj.result.data[i].label;        
+        for(let j in obj.result.data[i].data) {
+            // x軸とのずれの確認
+            // FIXME: 以下はデータの年度が5で割り切れる前提で書いているので修正要
+            if (obj.result.data[i].data[j].year%5 == 0) {
+                values[i][j] = obj.result.data[i].data[j].value;
+                
+                if(i === "0"){
+                    years.push(obj.result.data[i].data[j].year);
+                }
+            } else {
+                values[i][j] = null;
+            }
+        }    
+    }
+
+    console.log(labels[0]);
+    console.log(values[0]);
+
+    var ctx = document.getElementById("myLineChart");
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: years,
+            datasets: [
+                {
+                label: labels[0],
+                data: values[0],
+                borderColor: "rgba(255,75,0,1)",
+                backgroundColor: "rgba(0,0,0,0)",
+                pointStyle: 'circle'
+                },
+                {
+                label: labels[1],
+                data: values[1],
+                borderColor: "rgba(0,90,255,1)",
+                backgroundColor: "rgba(0,0,0,0)",
+                pointStyle: 'crossRot'
+                },
+                {
+                label: labels[2],
+                data: values[2],
+                borderColor: "rgba(3,175,122,1)",
+                backgroundColor: "rgba(0,0,0,0)",
+                pointStyle: 'rect'
+                },
+                {
+                label: labels[3],
+                data: values[3],
+                borderColor: "rgba(255,241,0,1)",
+                backgroundColor: "rgba(0,0,0,0)",
+                pointStyle: 'triangle'
+                }
+            ],
+        },
+        options: {
+            title: {
+                display: true,
+                text: '人口推移'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                    // suggestedMax: 16000,
+                    // suggestedMin: 0,
+                    // stepSize: 2000,
+                    callback: function(value, index, values){
+                        return  value +  '人'
+                    }
+                    }
+                }]
+            },
+        }
+    }); 
+    }
 </script>
