@@ -2,12 +2,15 @@ class RoomChannel < ApplicationCable::Channel
     def subscribed
       stream_from "room_channel_#{params['room_id']}"
 
+      redis = Redis.new(host: ENV["REDIS_HOST"], port: ENV["REDIS_PORT"])      
+      redisRoomItemKey = params['room_id'].to_s + '_Item'
+      redisGraphKindKey = params['room_id'].to_s + '_GraphKind'
+      redisGraphValueKey = params['room_id'].to_s + '_GraphValue'
 
-      redis = Redis.new(host: ENV["REDIS_HOST"], port: ENV["REDIS_PORT"])
-      if redis.get(params['room_id']).nil?
+      if redis.get(redisRoomItemKey).nil?
         dropItems = []
       else
-        dropItems = JSON.parse(redis.get(params['room_id']))
+        dropItems = JSON.parse(redis.get(redisRoomItemKey))
       end
       ActionCable.server.broadcast("room_channel_#{params['room_id']}", 
       {
@@ -15,6 +18,29 @@ class RoomChannel < ApplicationCable::Channel
         "data": dropItems
       }
       )
+
+
+      unless redis.get(redisGraphKindKey).nil? then
+        graphKind = redis.get(redisGraphKindKey)
+
+        if graphKind == "0"
+          ActionCable.server.broadcast(
+            "room_channel_#{params['room_id']}", 
+            {
+              "operation": "edit_graph_perYear",
+              "data": JSON.parse(redis.get(redisGraphValueKey))
+            }
+          )
+        else
+          ActionCable.server.broadcast(
+            "room_channel_#{params['room_id']}", 
+            {
+              "operation": "edit_graph_sumPerYear",
+              "data": JSON.parse(redis.get(redisGraphValueKey))
+            }
+          )
+        end
+      end
     end
   
     def unsubscribed
@@ -25,9 +51,13 @@ class RoomChannel < ApplicationCable::Channel
     def receive(data)
         # サーバーでデータを受信した時
         redis = Redis.new(host: ENV["REDIS_HOST"], port: ENV["REDIS_PORT"])
+        redisRoomItemKey = params['room_id'].to_s + '_Item'
+        redisGraphKindKey = params['room_id'].to_s + '_GraphKind'
+        redisGraphValueKey = params['room_id'].to_s + '_GraphValue'  
+
         if data["operation"] == "deleteAll" then
-          unless redis.get(params['room_id']).nil? then
-            redis.del params['room_id']
+          unless redis.get(redisRoomItemKey).nil? then
+            redis.del redisRoomItemKey
           end
           dropItems = []
           ActionCable.server.broadcast(
@@ -38,13 +68,13 @@ class RoomChannel < ApplicationCable::Channel
             }
           )  
         elsif data["operation"] == "add" then
-          if redis.get(params['room_id']).nil?
+          if redis.get(redisRoomItemKey).nil?
             dropItems = []
           else
-            dropItems = JSON.parse(redis.get(params['room_id']))
+            dropItems = JSON.parse(redis.get(redisRoomItemKey))
           end
           dropItems.push data["data"]
-          redis.set params['room_id'], dropItems.to_json
+          redis.set redisRoomItemKey, dropItems.to_json
           ActionCable.server.broadcast(
             "room_channel_#{params['room_id']}", 
             {
@@ -76,6 +106,9 @@ class RoomChannel < ApplicationCable::Channel
 
 
           if graphKind == "0"
+            redis.set redisGraphKindKey, "0"
+            redis.set redisGraphValueKey, response.read_body
+
             ActionCable.server.broadcast(
               "room_channel_#{params['room_id']}", 
               {
@@ -84,6 +117,9 @@ class RoomChannel < ApplicationCable::Channel
               }
             )
           else
+            redis.set redisGraphKindKey, "1"
+            redis.set redisGraphValueKey, response.read_body
+
             ActionCable.server.broadcast(
               "room_channel_#{params['room_id']}", 
               {
